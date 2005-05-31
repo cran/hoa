@@ -1,0 +1,13 @@
+Package: cond
+Title: Approximate conditional inference for logistic and loglinear 
+  models
+Description: Higher order likelihood-based inference for logistic and 
+  loglinear models
+Version: 1.0-0
+Date: 2005-03-02
+LazyLoad: yes
+LazyData: yes
+Author: S original by Alessandra R. Brazzale 
+  <alessandra.brazzale@isib.cnr.it>.  R port by Alessandra R. Brazzale 
+  <alessandra.brazzale@isib.cnr.it>, following earlier work by Douglas 
+  Bates.
