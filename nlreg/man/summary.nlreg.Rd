@@ -7,7 +7,8 @@
   Returns a summary list for a fitted nonlinear heteroscedastic model.
 }
 \usage{
-\method{summary}{nlreg}(object, observed = TRUE, correlation = FALSE, digits = NULL, \dots)
+\method{summary}{nlreg}(object, observed = TRUE, correlation = FALSE, 
+        digits = NULL, \dots)
 }
 \arguments{
   \item{object}{
@@ -85,10 +86,11 @@
 }
 \examples{
 data(metsulfuron)
-metsulfuron.nl <- nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
-                    weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
-                    start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
-                    hoa = TRUE )
+metsulfuron.nl <- 
+    nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
+           weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
+           start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
+           hoa = TRUE )
 ##
 summary( metsulfuron.nl, digits = 3 )
 ##

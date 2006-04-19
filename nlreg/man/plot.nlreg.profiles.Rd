@@ -11,13 +11,13 @@
 }
 \usage{
 \method{plot}{nlreg.profile}(x, alpha = 0.05, add.leg = FALSE, stats = c("sk", "fr"), 
-     cex = 0.7, cex.lab = 1, cex.axis = 1, cex.main = 1, lwd1 = 1, lwd2 = 2, 
-     lty1 = "solid", lty2 = "solid", cl1 = "blue", cl2 = "red", col = "black", 
-     ylim = c(-3,3), \dots)
-\method{plot}{all.nlreg.profiles}(x, nframe, alpha = 0.05, stats = c("sk", "fr"), 
-     cex = 0.7, cex.lab = 1, cex.axis = 1, cex.main = 1, lwd1 = 1, lwd2 = 2, 
-     lty1 = "solid", lty2 = "solid", cl1 = "blue", cl2 = "red", col = "black", 
-     ylim = c(-3,3), \dots)
+     cex = 0.7, cex.lab = 1, cex.axis = 1, cex.main = 1, lwd1 = 1, 
+     lwd2 = 2, lty1 = "solid", lty2 = "solid", cl1 = "blue", 
+     cl2 = "red", col = "black", ylim = c(-3,3), \dots)
+\method{plot}{all.nlreg.profiles}(x, nframe, alpha = 0.05, stats = c("sk", "fr"), cex = 0.7, 
+     cex.lab = 1, cex.axis = 1, cex.main = 1, lwd1 = 1, lwd2 = 2, 
+     lty1 = "solid", lty2 = "solid", cl1 = "blue", cl2 = "red", 
+     col = "black", ylim = c(-3,3), \dots)
 }
 \synopsis{
 \method{plot}{nlreg.profile}(x = stop("nothing to plot"), alpha = 0.05, add.leg = FALSE, stats = c("sk", "fr"), 
@@ -104,10 +104,11 @@
 }
 \examples{
 data(metsulfuron)
-metsulfuron.nl <- nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
-                    weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
-                    start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
-                    hoa = TRUE)
+metsulfuron.nl <- 
+    nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
+           weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
+           start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
+           hoa = TRUE)
 ##
 metsulfuron.prof <- profile( metsulfuron.nl, offset = g, trace = TRUE )
 plot( metsulfuron.prof, lwd2 = 2 )

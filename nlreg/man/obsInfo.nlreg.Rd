@@ -8,7 +8,8 @@
   model. 
 }
 \usage{
-\method{obsInfo}{nlreg}(object, par, mu, v, m1 = NULL, m2 = NULL, v1 = NULL, v2 = NULL, \dots)
+\method{obsInfo}{nlreg}(object, par, mu, v, m1 = NULL, m2 = NULL, v1 = NULL, 
+        v2 = NULL, \dots)
 }
 \arguments{
   \item{object}{

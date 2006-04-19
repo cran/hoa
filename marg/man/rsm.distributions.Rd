@@ -27,7 +27,7 @@
   This object is used by the functions \code{make.family.rsm} and,
   indirectly, by \code{rsm} when constructing a \code{family.rsm}
   object.  See the documentation of \code{\link{family.rsm.object}}
-  and \code{\link{make.family.rsm}} for additional details.
+  and \linebreak \code{\link{make.family.rsm}} for additional details.
 }
 \seealso{
   \code{\link{family.rsm.object}}, \code{\link{make.family.rsm}},

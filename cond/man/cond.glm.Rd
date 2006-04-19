@@ -10,9 +10,9 @@
 }
 \usage{
 cond.glm(object, offset, formula = NULL, family = NULL, 
-         data = sys.frame(sys.parent()), pts = 20, n = max(100, 2*pts), 
-         tms = 0.6, from = NULL, to = NULL, control = glm.control(...), 
-         trace = FALSE, \dots)
+         data = sys.frame(sys.parent()), pts = 20, 
+         n = max(100, 2*pts), tms = 0.6, from = NULL, to = NULL, 
+         control = glm.control(...), trace = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -74,7 +74,7 @@ cond.glm(object, offset, formula = NULL, family = NULL,
   }
   \item{control}{
     a list of iteration and algorithmic constants that controls the 
-    \acronym{GLM} fit.  See \code{\link[stats]{glm.control}} for their 
+    \acronym{GLM} fit.  See \linebreak \code{\link[stats]{glm.control}} for their 
     names and default values.  
   }
   \item{trace}{
@@ -180,27 +180,27 @@ cond.glm(object, offset, formula = NULL, family = NULL,
 \examples{
 ## Crying Babies Data
 data(babies)
-babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, family = binomial,
-                  data = babies)
+babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, 
+                  family = binomial, data = babies)
 babies.cond <- cond(object = babies.glm, offset = lullyes)
 babies.cond
 ##
 ## If one wishes to avoid the generalized linear model fit:
-babies.cond <- cond.glm(formula = cbind(r1, r2) ~ day + lull - 1, family = binomial,
-                        data = babies, offset = lullyes)
+babies.cond <- cond.glm(formula = cbind(r1, r2) ~ day + lull - 1, 
+                        family = binomial, data = babies, offset = lullyes)
 babies.cond
 
 ## Urine Data 
 ## (function call as offset variable) 
 data(urine)
-urine.glm <- glm(r ~ gravity + ph + osmo + conduct + urea + log(calc), family = binomial,
-                 data = urine)
+urine.glm <- glm(r ~ gravity + ph + osmo + conduct + urea + log(calc), 
+                 family = binomial, data = urine)
 labels(coef(urine.glm))
 urine.cond <- cond(urine.glm, log(calc))
 ##
 ## (large estimate of regression coefficient)
-urine.glm <- glm(r ~ gravity + ph + osmo + conduct + urea + calc, family = binomial,
-                 data = urine)
+urine.glm <- glm(r ~ gravity + ph + osmo + conduct + urea + calc, 
+                 family = binomial, data = urine)
 coef(urine.glm)
 urine.glm <- glm(r ~ I(gravity * 100) + ph + osmo + conduct + urea + calc, 
                  family = binomial, data = urine)
@@ -211,13 +211,14 @@ urine.cond <- cond(urine.glm, I(gravity * 100))
 ##                                   MLE)
 ## (full data analysis)
 data(fungal)
-fungal.glm <- glm(cbind(success, failure) ~ center + group - 1, family = binomial, 
-                  data = fungal, control = glm.control(maxit = 50, epsilon = 1e-005))
+fungal.glm <- glm(cbind(success, failure) ~ center + group - 1, 
+                  family = binomial, data = fungal, 
+                  control = glm.control(maxit = 50, epsilon = 1e-005))
 fungal.cond <- cond(fungal.glm, groupT)
 plot(fungal.cond, which = 2)
 ## (partial data analysis)
-fungal.glm <- glm(cbind(success, failure) ~ center + group - 1, family = binomial, 
-                  data = fungal, subset = -c(1,2,5,6), 
+fungal.glm <- glm(cbind(success, failure) ~ center + group - 1, 
+                  family = binomial, data = fungal, subset = -c(1,2,5,6), 
                   control = glm.control(maxit = 50, epsilon = 1e-005))
 fungal.cond <- cond(fungal.glm, groupT)
 plot(fungal.cond, which = 2)

@@ -11,8 +11,8 @@
 \usage{
 dmt(x, df=stop("'df' argument is missing, with no default"), 
     mm=rep(0, length(x)), cov=diag(rep(1, length(x))))
-rmt(n, df=stop("'df' argument is missing, with no default"), mm=rep(0, mult), 
-    cov=diag(rep(1, mult)), mult, is.chol=FALSE)
+rmt(n, df=stop("'df' argument is missing, with no default"), 
+    mm=rep(0, mult), cov=diag(rep(1, mult)), mult, is.chol=FALSE)
 }
 \arguments{
   \item{x}{

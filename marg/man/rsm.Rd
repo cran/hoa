@@ -8,10 +8,11 @@
   model fit of the data.
 }
 \usage{
-rsm(formula = formula(data), family = gaussian, data = sys.frame(sys.parent()),
-    dispersion = NULL, weights = NULL, subset = NULL, na.action = na.fail, 
-    offset = NULL, method = "rsm.surv", control = glm.control(maxit=100, 
-                                                              trace=FALSE), 
+rsm(formula = formula(data), family = gaussian, 
+    data = sys.frame(sys.parent()), dispersion = NULL, 
+    weights = NULL, subset = NULL, na.action = na.fail, 
+    offset = NULL, method = "rsm.surv", 
+    control = glm.control(maxit=100, trace=FALSE), 
     model = FALSE, x = FALSE, y = TRUE, contrasts = NULL, \dots)
 }
 \arguments{
@@ -208,8 +209,8 @@ rsm(formula = formula(data), family = gaussian, data = sys.frame(sys.parent()),
 data(houses)
 houses.rsm <- rsm(price ~ ., family = student(5), data = houses)
 ## model fit including all covariates
-houses.rsm <- rsm(price ~ ., family = student(5), data = houses, method = "rsm.fit", 
-                  control = glm.control(trace = TRUE))
+houses.rsm <- rsm(price ~ ., family = student(5), data = houses, 
+                  method = "rsm.fit", control = glm.control(trace = TRUE))
 ## prints information about the iterative procedure at each iteration
 update(houses.rsm, ~ . - bdroom + offset(7 * bdroom))
 ## "bdroom" is included as offset variable with fixed (= 7) coefficient
@@ -225,7 +226,8 @@ venice.1.rsm <- update(venice.2.rsm, ~. - I(Year^2))
 ##
 c11 <- cos(2*pi*1:51/11) ; s11 <- sin(2*pi*1:51/11)
 c19 <- cos(2*pi*1:51/18.62) ; s19 <- sin(2*pi*1:51/18.62)
-venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, family = extreme)
+venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, 
+                  family = extreme)
 ## includes 18.62-year astronomical tidal cycle and 11-year sunspot cycle
 venice.11.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11, family = extreme)
 venice.19.rsm <- rsm(sea ~ Year + I(Year^2) + c19 + s19, family = extreme)
@@ -242,7 +244,8 @@ detach()
 
 ## Darwin's Data on Growth Rates of Plants
 data(darwin)
-darwin.rsm <- rsm(cross - self ~ pot - 1, family  =  student(3), data = darwin)
+darwin.rsm <- rsm(cross - self ~ pot - 1, family  =  student(3), 
+                  data = darwin)
 ## Maximum likelihood estimates
 darwin.rsm <- rsm(cross - self ~ pot - 1, family = Huber, data = darwin)
 ## M-estimates

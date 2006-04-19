@@ -27,11 +27,11 @@
 }
 \seealso{
   \code{\link[nlreg]{profile.nlreg}}, 
-  \code{\link[nlreg]{summary.nlreg.profile}},
-  \code{\link[nlreg]{summary.all.nlreg.profiles}},
-  \code{\link[nlreg:plot.nlreg.profiles]{plot.nlreg.profile}},
-  \code{\link[nlreg:plot.nlreg.profiles]{plot.all.nlreg.profiles}},
-  \code{\link[nlreg]{contour.all.nlreg.profiles}},
+  \code{\link[nlreg]{summary.nlreg.profile}}, 
+  \code{\link[nlreg]{summary.all.nlreg.profiles}}, \linebreak
+  \code{\link[nlreg:plot.nlreg.profiles]{plot.nlreg.profile}}, 
+  \code{\link[nlreg:plot.nlreg.profiles]{plot.all.nlreg.profiles}}, 
+  \code{\link[nlreg]{contour.all.nlreg.profiles}}, \linebreak 
   \code{\link[nlreg]{nlreg.object}}
 }
 \keyword{internal}

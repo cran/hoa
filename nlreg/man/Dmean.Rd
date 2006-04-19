@@ -73,8 +73,8 @@ Dmean(nlregObj, hessian = TRUE)
 \examples{
 library(boot)
 data(calcium)
-calcium.nl <- nlreg( cal ~ b0*(1-exp(-b1*time)), start = c(b0 = 4, b1 = 0.1), 
-                     data = calcium )
+calcium.nl <- nlreg( cal ~ b0*(1-exp(-b1*time)), 
+                     start = c(b0 = 4, b1 = 0.1),  data = calcium )
 Dmean( calcium.nl )
 ##function (b0, b1, logs)
 ##{

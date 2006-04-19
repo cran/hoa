@@ -62,19 +62,19 @@ cond(object, offset, \dots)
 ## Urine Data 
 \dontrun{
 data(urine)
-urine.glm <- glm(r ~ gravity + ph + osmo + cond + urea + log(calc), family = binomial,
-                 data = urine)
+urine.glm <- glm(r ~ gravity + ph + osmo + cond + urea + log(calc), 
+                 family = binomial, data = urine)
 ##
 ## function call as offset variable 
 labels(coef(urine.glm))
 cond(urine.glm, log(calc))
 ##
 ## large estimate of regression coefficient
-urine.glm <- glm(r ~ gravity + ph + osmo + cond + urea + calc, family = binomial,
-                 data = urine)
+urine.glm <- glm(r ~ gravity + ph + osmo + cond + urea + calc, 
+                 family = binomial, data = urine)
 coef(urine.glm)
-urine.glm <- glm(r ~ I(gravity * 100) + ph + osmo + cond + urea + calc, family = binomial,
-                 data = urine)
+urine.glm <- glm(r ~ I(gravity * 100) + ph + osmo + cond + urea + calc, 
+                 family = binomial, data = urine)
 coef(urine.glm)
 urine.cond <- cond(urine.glm, I(gravity * 100))
 plot(urine.cond, which = 4)
@@ -90,16 +90,5 @@ plot(houses.marg, which = 2)
 }
 \keyword{models}
 \keyword{regression}
-\keywork{methods}
-
-
-
-
-
-
-
-
-
-
-
+\keyword{methods}
 

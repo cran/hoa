@@ -14,9 +14,10 @@
 }
 \usage{
 nlreg.diag.plots(fitted, which = "all", subset = NULL, iden = FALSE, 
-                 labels = NULL, hoa = TRUE, infl = TRUE, trace = FALSE,
-                 ret = FALSE, \dots)
-\method{plot}{nlreg.diag}(x, which = "all", subset = NULL, iden = FALSE, labels = NULL, \dots)
+                 labels = NULL, hoa = TRUE, infl = TRUE, 
+                 trace = FALSE, ret = FALSE, \dots)
+\method{plot}{nlreg.diag}(x, which = "all", subset = NULL, iden = FALSE, labels = NULL, 
+     \dots)
 }
 \arguments{
   \item{fitted}{

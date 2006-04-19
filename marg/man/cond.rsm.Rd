@@ -9,10 +9,10 @@
   object of class \code{marg}. 
 }
 \usage{
-\method{cond}{rsm}(object, offset, formula = NULL, family = NULL, dispersion = NULL, 
-     data = sys.frame(sys.parent()), pts = 20, n = max(100, 2*pts), 
-     tms = 0.6, from = NULL, to = NULL, control = glm.control(\dots), 
-     trace = FALSE, \dots)
+\method{cond}{rsm}(object, offset, formula = NULL, family = NULL, 
+     dispersion = NULL, data = sys.frame(sys.parent()), pts = 20, 
+     n = max(100, 2*pts), tms = 0.6, from = NULL, to = NULL, 
+     control = glm.control(\dots), trace = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -86,7 +86,7 @@
   }
   \item{control}{
     a list of iteration and algorithmic constants that control the 
-    \code{rsm} fit.  See \code{\link{glm.control}} for their names and
+    \code{rsm} fit.  See \linebreak \code{\link{glm.control}} for their names and
     default values.  
   }
   \item{trace}{
@@ -202,7 +202,8 @@ c19 <- cos(2*pi*1:51/18.62) ; s19 <- sin(2*pi*1:51/18.62)
 ##
 ## quadratic model fitted to the sea level, includes 18.62-year 
 ## astronomical tidal cycle and 11-year sunspot cycle
-venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, family = extreme)
+venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, 
+                  family = extreme)
 names(coef(venice.rsm))
 ## "(Intercept)"  "Year"  "I(Year^2)"  "c11"  "s11"  "c19"  "s19"      
 ##

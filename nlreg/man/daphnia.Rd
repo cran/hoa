@@ -50,8 +50,8 @@
 \examples{
 data(daphnia)
 attach(daphnia)
-plot(conc, time, xlab = "test concentration (mg/l)", ylab = "survival time (d)", 
-     log = "y")
+plot(conc, time, xlab = "test concentration (mg/l)", 
+     ylab = "survival time (d)", log = "y")
 detach()
 }
 \keyword{datasets}

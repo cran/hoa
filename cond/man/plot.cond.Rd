@@ -7,12 +7,12 @@
   Creates a set of plots for an object of class \code{cond}.
 }
 \usage{
-\method{plot}{cond}(x = stop("nothing to plot"), from = x.axis[1],  to = x.axis[n], 
-          which = NULL, alpha = 0.05, add.leg = TRUE, loc.leg = FALSE,
-          add.labs = TRUE, cex = 0.7, cex.lab = 1, cex.axis = 1, 
-          cex.main = 1, lwd1 = 1, lwd2 = 2, lty1 = "solid", lty2 = "dashed", 
-          col1 = "black", col2 = "blue", tck = 0.02, las = 1, adj = 0.5, 
-          lab = c(15, 15, 5), \dots)
+\method{plot}{cond}(x = stop("nothing to plot"), from = x.axis[1], to = x.axis[n], 
+     which = NULL, alpha = 0.05, add.leg = TRUE, loc.leg = FALSE,
+     add.labs = TRUE, cex = 0.7, cex.lab = 1, cex.axis = 1, 
+     cex.main = 1, lwd1 = 1, lwd2 = 2, lty1 = "solid", 
+     lty2 = "dashed", col1 = "black", col2 = "blue", tck = 0.02, 
+     las = 1, adj = 0.5, lab = c(15, 15, 5), \dots)
 }
 \arguments{
   \item{x}{
@@ -146,8 +146,8 @@ Selection:
 \examples{
 ## Crying Babies Data
 data(babies)
-babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, family = binomial,
-                  data = babies)
+babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, 
+                  family = binomial, data = babies)
 babies.cond <- cond(object = babies.glm, offset = lullyes)
 \dontrun{
 plot(babies.cond)
@@ -155,8 +155,8 @@ plot(babies.cond)
 
 ## Urine Data 
 data(urine)
-urine.glm <- glm(r ~ I(gravity * 100) + ph + osmo + conduct + urea + calc, family = binomial, 
-                 data = urine)
+urine.glm <- glm(r ~ I(gravity * 100) + ph + osmo + conduct + urea + calc, 
+                 family = binomial, data = urine)
 urine.cond <- cond(urine.glm, I(gravity * 100))
 plot(urine.cond, which=4)
 }

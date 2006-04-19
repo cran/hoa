@@ -1,0 +1,10 @@
+Functions:
+=========
+Laplace                 Calculate Laplace's Marginal Density
+                        Approximation
+dmt                     Multivariate Student t Distribution
+make.sample.data        Create a Conditional Sampling Data Object
+plot.Lapl.spl           Plot uni- and bivariate approximate marginal
+                        densities
+rsm.sample              Conditional Sampler for Regression-Scale
+                        Models

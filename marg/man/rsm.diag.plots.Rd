@@ -9,9 +9,9 @@
   different types of residuals, Cook's distance and the leverages.    
 }
 \usage{
-rsm.diag.plots(rsmfit, rsmdiag = NULL, weighting = NULL, which = NULL,
-               subset = NULL, iden = FALSE, labels = NULL, ret = FALSE, 
-               \dots)
+rsm.diag.plots(rsmfit, rsmdiag = NULL, weighting = NULL, 
+               which = NULL, subset = NULL, iden = FALSE, 
+               labels = NULL, ret = FALSE, \dots)
 \method{plot}{rsm}(x, \dots)
 }
 \arguments{
@@ -143,7 +143,8 @@ attach(venice)
 Year <- 1:51/51
 c11 <- cos(2*pi*1:51/11) ; s11 <- sin(2*pi*1:51/11)
 c19 <- cos(2*pi*1:51/18.62) ; s19 <- sin(2*pi*1:51/18.62)
-venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, family = extreme)
+venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19, 
+                  family = extreme)
 \dontrun{
 rsm.diag.plots(venice.rsm, which = 3)
 }

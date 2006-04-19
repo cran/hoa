@@ -7,9 +7,9 @@
   Returns a summary list for objects of class \code{marg}.
 }
 \usage{
-\method{summary}{marg}(object, alpha = 0.05, test = NULL, all = FALSE, coef = TRUE, 
-        int = ifelse((is.null(test) || all), TRUE, FALSE), digits = NULL, 
-        \dots)
+\method{summary}{marg}(object, alpha = 0.05, test = NULL, all = FALSE, 
+        coef = TRUE, int = ifelse((is.null(test) || all), TRUE, FALSE), 
+        digits = NULL, \dots)
 }
 \arguments{
   \item{object}{

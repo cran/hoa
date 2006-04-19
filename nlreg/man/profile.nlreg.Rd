@@ -8,8 +8,9 @@
   model. 
 }
 \usage{
-\method{profile}{nlreg}(fitted, offset = "all", hoa = TRUE, precision = 6, signif = 30, 
-        n = 50, omit = 0.5, trace = FALSE, md, vd, all = FALSE, \dots)
+\method{profile}{nlreg}(fitted, offset = "all", hoa = TRUE, precision = 6, 
+        signif = 30, n = 50, omit = 0.5, trace = FALSE, md, vd, 
+        all = FALSE, \dots)
 }
 \arguments{
   \item{fitted}{
@@ -32,7 +33,7 @@
   }
   \item{precision}{
     numerical value defining the maximum range of values, given by 
-    \acronym{MLE} \eqn{\pm}{+/-} 
+    \linebreak \acronym{MLE} \eqn{\pm}{+/-} 
     \code{precision}\eqn{*}{*}\acronym{s.e.}, that are profiled.  The 
     default is 6.
   }
@@ -171,10 +172,11 @@
 }
 \examples{
 data(metsulfuron)
-metsulfuron.nl <- nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
-                    weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
-                    start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
-                    hoa = TRUE )
+metsulfuron.nl <- 
+    nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
+           weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
+           start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
+           hoa = TRUE )
 ##
 metsulfuron.prof <- profile( metsulfuron.nl, offset = g, trace = TRUE )
 plot( metsulfuron.prof, lwd2 = 2 )

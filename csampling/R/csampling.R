@@ -1,6 +1,6 @@
-## file csampling/R/csampling.R, v 1.0 2004/04/30
+## file csampling/R/csampling.R, v 1.1-0 2006/02/09
 ##
-##  Copyright (C) 2000-2004 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "csampling" package for R.  This program  
 ##  is free software; you can redistribute it and/or modify it under 
@@ -427,7 +427,7 @@ rmt <- function(n, df = stop("\'df\' argument is missing, with no default"),
       stop("size mismatch")
   }
   if(mult == 1)
-    return(cov * rt(n, df = df) + mm)
+    return(sqrt(cov) * rt(n, df = df) + mm)
   S <- if(!is.chol) t(chol(cov)) else cov
   x <- matrix(rnorm(mult * n), nrow = mult, ncol = n, byrow = FALSE)
   y <- rchisq(n, df)
@@ -449,18 +449,4 @@ dmt <-  function(x, df = stop("\'df\' argument is missing, with no default"),
          sqrt(det(cov))*
            (1+t((x-mm))%*%solve(qr(cov))%*%(x-mm)/df)^(-(df+m)/2)
   d
-}
-
-.First.lib <- function(libname, pkgname) 
-{
-  version <- as.character("1.0.0 (2004-04-30)")
-  cat("\n   Package \"csampling\"", version, "\n")
-  cat("   Copyright (C) 2000-2004 A. R. Brazzale\n\n")
-  cat("This is free software, and you are welcome to redistribute\n")
-  cat("it and/or modify it under the terms of the GNU General\n")
-  cat("Public License published by the Free Software Foundation.\n")
-  cat("Package \"csampling\" comes with ABSOLUTELY NO WARRANTY.\n\n")
-  cat("type `help(package=\"csampling\")' for summary information\n")
-  require(marg)
-  invisible()
 }

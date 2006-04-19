@@ -8,8 +8,8 @@
   It is not intended to be called directly by users.
 }
 \usage{
-all.profiles.nlreg(fitted, hoa = TRUE, precision = 6, signif = 30, n = 50,
-                   omit = 0.5, trace = FALSE, call, \dots)
+all.profiles.nlreg(fitted, hoa = TRUE, precision = 6, signif = 30, 
+                   n = 50, omit = 0.5, trace = FALSE, call, \dots)
 }
 \arguments{
   \item{fitted}{
@@ -22,7 +22,7 @@ all.profiles.nlreg(fitted, hoa = TRUE, precision = 6, signif = 30, n = 50,
   }
   \item{precision}{
     numerical value defining the maximum range of values, given by 
-    \acronym{MLE} \eqn{\pm}{+/-} \code{precision}*\acronym{s.e.}, that
+    \linebreak \acronym{MLE} \eqn{\pm}{+/-} \code{precision}*\acronym{s.e.}, that
     are profiled.  The default is 6.
   }
   \item{signif}{

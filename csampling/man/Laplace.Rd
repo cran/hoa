@@ -53,7 +53,7 @@ Laplace(which = stop("no choice made"), data = stop("data are missing"),
        generator functions are available in the \code{marg} 
        package of the \acronym{R} package bundle \code{hoa}: 
        \code{student} (Student's t), \code{extreme} (Gumbel or extreme 
-       value), \code{logistic}, \code{logWeibull}, 
+       value), \code{logistic}, \code{logWeibull}, \linebreak
        \code{logExponential}, \code{logRayleigh} and \code{Huber} 
        (Huber's least favourable).  The demonstration file 
        \file{margdemo.R} that accompanies the \code{marg} package shows

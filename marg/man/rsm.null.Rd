@@ -7,7 +7,8 @@
   Fits a \code{rsm} model with empty model matrix.
 }
 \usage{
-rsm.null(X = NULL, Y, offset, family, dispersion, maxit, epsilon, trace, \dots)
+rsm.null(X = NULL, Y, offset, family, dispersion, maxit, epsilon, 
+         trace, \dots)
 }
 \arguments{
   \item{X}{ 

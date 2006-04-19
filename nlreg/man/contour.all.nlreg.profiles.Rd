@@ -9,10 +9,11 @@
   returns the list of elements used.
 }
 \usage{
-\method{contour}{all.nlreg.profiles}(x, offset1, offset2, alpha = c(0.1, 0.05), stats = c("sk", "fr"), 
-        ret = FALSE, plotit = TRUE, drawlabels = FALSE, lwd1 = 1, lwd2 = 1, 
-        lty1 = "solid", lty2 = "solid", cl1 = "blue", cl2 = "red", 
-        col = "black", pch1 = 1, pch2 = 16, cex = 0.5, \dots)
+\method{contour}{all.nlreg.profiles}(x, offset1, offset2, alpha = c(0.1, 0.05),
+        stats = c("sk", "fr"), ret = FALSE, plotit = TRUE, 
+        drawlabels = FALSE, lwd1 = 1, lwd2 = 1, lty1 = "solid", 
+        lty2 = "solid", cl1 = "blue", cl2 = "red", col = "black", 
+        pch1 = 1, pch2 = 16, cex = 0.5, \dots)
 }
 \arguments{
   \item{x}{
@@ -186,10 +187,11 @@
 }
 \examples{
 data(metsulfuron)
-metsulfuron.nl <- nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
-                    weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
-                    start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
-                    hoa = TRUE )
+metsulfuron.nl <- 
+    nlreg( formula = log(area) ~ log( b1+(b2-b1) / (1+(dose/b4)^b3) ), 
+           weights = ~ ( 1+dose^exp(g) )^2, data = metsulfuron, 
+           start = c(b1 = 138, b2 = 2470, b3 = 2, b4 = 0.07, g = log(0.3)),
+           hoa = TRUE )
 ##
 metsulfuron.prof <- profile( metsulfuron.nl, trace = TRUE )
 par( mai = rep(0.2, 4) )

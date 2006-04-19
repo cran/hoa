@@ -1,6 +1,6 @@
-## file nlreg/R/nlreg.R, v 1.0.0 2005/05/31
+## file nlreg/R/nlreg.R, v 1.1-0 2006/02/09
 ##
-##  Copyright (C) 2000-2005 Ruggero Bellio & Alessandra R. Brazzale 
+##  Copyright (C) 2000-2006 Ruggero Bellio & Alessandra R. Brazzale 
 ##
 ##  This file is part of the "nlreg" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -535,7 +535,7 @@ summary.nlreg <- function(object, observed = TRUE,
   .probl <- ( nlregObj$ws$homVar && !is.null(of) )
   if( .probl )
     .probl <- ( names(of) =="logs" )			
-  attach(nlregObj$data)
+  attach(nlregObj$data, warn.conflicts = FALSE)
   tmp <- as.list(par)
   temp <- if( nlregObj$ws$hoa ) 
             do.call("md", tmp)
@@ -720,7 +720,7 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
     cut.idx <- length(rc) + 1		 
     addVar <- rep(0, length(nlregObj$data$repl))  
     nlregHoa$data <- c(nlregHoa$data, list(addVar=addVar))
-    attach(nlregHoa$data)
+    attach(nlregHoa$data, warn.conflicts = FALSE)
     new.par <- nlregHoa$ws$allPar
     tmp <- as.list(new.par)
     temp <- do.call("md", tmp)
@@ -808,7 +808,7 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
                 Dvar(nlregObj, hessian=FALSE)
               }
     }
-    attach(nlregObj$data)
+    attach(nlregObj$data, warn.conflicts = FALSE)
     tmp <- as.list(nlregObj$ws$allPar)
     temp <- do.call("md", tmp)
     m1.0 <- attr(temp, "gradient") ; m1.0[!is.finite(m1.0)] <- 0
@@ -876,7 +876,7 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
       newData2 <- data.frame(cbind(newData, addVar))
       lv <- lm((nlregObj$residual*sqrt(nlregObj$weights))~addVar-1)$coef
       newCall$start["phi"] <- signif(lv, 4)
-      attach(newData2)
+      attach(newData2, warn.conflicts = FALSE)
       ctrl <- try(eval(newCall), silent=TRUE)
       if( class(ctrl)[1] != "try-error" )
       {
@@ -884,7 +884,7 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
         lv <- coef(nlreg.temp)["phi"]
         phi.h[sset] <- nlreg.temp$coef["phi"]
         logLik.1[sset] <- nlreg.temp$logLik
-        attach(nlreg.temp$data)
+        attach(nlreg.temp$data, warn.conflicts = FALSE)
         tmp <- as.list(nlreg.temp$ws$allPar)
         temp <- do.call("md", tmp)
         m1.1 <- attr(temp, "gradient") ; m1.1[!is.finite(m1.1)] <- 0
@@ -1446,7 +1446,7 @@ profile.nlreg <- function(fitted, offset = "all", hoa = TRUE,
     	cat("\ndifferentiating variance function -- may take a while")
         vd <- Dvar(nlregObj)  
       }
-    attach(nlregObj$data)
+    attach(nlregObj$data, warn.conflicts = FALSE)
     tmp <- as.list(nlregObj$ws$allPar)
     temp <- do.call("md", tmp)
     m1.1 <- attr(temp, "gradient") ; m1.1[!is.finite(m1.1)] <- 0
@@ -1490,8 +1490,11 @@ profile.nlreg <- function(fitted, offset = "all", hoa = TRUE,
       Dmvh[1:db,] <- Dmvh[1:db,] + t(Dmh)
       dimnames(Dmvh) <- list(names(nlregObj$ws$allPar), rep("", ncol(Dmvh)))
       lvh <- - matrix( rowSums( t(Dvh / wh) ), ncol=1)
-      lthvh <- Dmvh %*% (aa <- cbind( vecmat( 1/wh^2, (Dmh + Dvh[,1:db]) ),
+      lthvh <- Dmvh %*% (aa <- cbind( vecmat( 1/wh^2, Dmh ) + 
+                                        vecmat( rh/wh^2, Dvh[,1:db] ),
                                       vecmat( 2*rh/wh^2, Dvh[,(db+1):dp] ) ))
+#      lthvh <- Dmvh %*% (aa <- cbind( vecmat( 1/wh^2, (Dmh + Dvh[,1:db]) ),
+#                                      vecmat( 2*rh/wh^2, Dvh[,(db+1):dp] ) ))
       dimnames(lthvh) <- list(names(nlregObj$ws$allPar), 
                               names(nlregObj$ws$allPar))
       dimnames(aa) <- list(rep("", nrow(aa)), names(nlregObj$ws$allPar))
@@ -1541,7 +1544,7 @@ profile.nlreg <- function(fitted, offset = "all", hoa = TRUE,
           r[next.idx] <- sqrt( 2* (logLik1-logLik0) ) * sign(mle-of)
           if(wantHoa)
           {
-            attach(nlregObj0$data)
+            attach(nlregObj0$data, warn.conflicts = FALSE)
             tmp <- as.list(nlregObj0$ws$allPar)
             temp <- do.call("md", tmp)
   	    m1.0 <- attr(temp, "gradient") ; m1.0[!is.finite(m1.0)] <- 0
@@ -1603,8 +1606,10 @@ profile.nlreg <- function(fitted, offset = "all", hoa = TRUE,
             dimnames(lvt) <- list(names(nlregObj$ws$allPar), "")
             if( nlregObj$ws$homVar )
               lvt[names(rc),] <- 0
-            aa <- cbind( vecmat( 1/wt^2, (Dmt + Dvt[,1:db]) ),
+            aa <- cbind( vecmat( 1/wt^2, Dmt ) + vecmat( rt/wt^2, Dvt[,1:db] ),
                          vecmat( 2*rt/wt^2, Dvt[,(db+1):dp] ) )
+#            aa <- cbind( vecmat( 1/wt^2, (Dmt + Dvt[,1:db]) ),
+#                         vecmat( 2*rt/wt^2, Dvt[,(db+1):dp] ) )
             lthvt <- Dmvh %*% aa
             dimnames(lthvt) <- list(names(nlregObj$ws$allPar), 
                                     names(nlregObj$ws$allPar))
@@ -2786,7 +2791,7 @@ mpl.nlreg <- function(fitted, offset = NULL, stats = c("sk", "fr"),
           cat("\ndifferentiating variance function -- may take a while")
           Dvar(nlregObj)
         }
-  attach(nlregObj$data)	
+  attach(nlregObj$data, warn.conflicts = FALSE)	
   tmp <- as.list(nlregObj$ws$allPar)
   temp <- do.call("md", tmp)
   m1 <- attr(temp, "gradient") ; m1[!is.finite(m1)] <- 0
@@ -2852,7 +2857,7 @@ mpl.nlreg <- function(fitted, offset = NULL, stats = c("sk", "fr"),
       nlreg.temp$weights <- den
       nlreg.temp$ws$allPar <- c(regCoef, varPar)  
       names(nlreg.temp$ws$allPar) <- c(rc, vp)
-      attach(nlreg.temp$data)
+      attach(nlreg.temp$data, warn.conflicts = FALSE)
       tmp <- as.list(nlreg.temp$ws$allPar)
       temp <- do.call("md", tmp)
       m1.t <- attr(temp, "gradient") ; m1.t[!is.finite(m1.t)] <- 0
@@ -2883,9 +2888,11 @@ mpl.nlreg <- function(fitted, offset = NULL, stats = c("sk", "fr"),
         }	
         Dvt <- Dvt/2/wt 
         lvt <- - matrix( rowSums( matvec(Dmvh, rt/wt) ), ncol=1)
-        dimnames(lvt) <- list(names(nlregObj$ws$allPar), "")
-        aa <- cbind( vecmat( 1/wt^2, (Dmt + Dvt[,1:db]) ),
-                     vecmat( 2*rt/wt^2, Dvt[,(db+1):dp] ) ) 
+        dimnames(lvt) <- list(names(nlregObj$ws$allPar), "") 
+        aa <- cbind( vecmat( 1/wt^2, Dmt ) + vecmat( rt/wt^2, Dvt[,1:db] ),
+                      vecmat( 2*rt/wt^2, Dvt[,(db+1):dp] ) )
+#        aa <- cbind( vecmat( 1/wt^2, (Dmt + Dvt[,1:db]) ),
+#                     vecmat( 2*rt/wt^2, Dvt[,(db+1):dp] ) ) 
         lchvt <-  Dmvh[rc,,drop=FALSE] %*% aa[,rc,drop=FALSE]
       }
       i.obs <- obsInfo.nlreg(nlreg.temp, m1=m1.t, m2=m2.t, 
@@ -2904,6 +2911,8 @@ mpl.nlreg <- function(fitted, offset = NULL, stats = c("sk", "fr"),
       }
       lmp <- logLik - log(det(i.obs)) + 
                2*log(det( if(stats == "sk") S.hat else lchvt ))
+#      lmp <- logLik - determinant(i.obs)$mod + 
+#               2*determinant( if(stats == "sk") S.hat else lchvt )$mod
       if( !lastIter )
 	lmp
       else
@@ -3188,7 +3197,7 @@ obsInfo.nlreg <- function(object, par, mu, v, m1 = NULL, m2 = NULL,
   .probl <- ( nlregObj$ws$homVar && !is.null(of) )
   if( .probl )
     .probl <- ( names(of) =="logs" )		
-  attach(nlregObj$data)  
+  attach(nlregObj$data, warn.conflicts = FALSE)  
   on.exit( detach(nlregObj$data) )
   if( !nlregObj$ws$missingData )
   {
@@ -3338,7 +3347,7 @@ expInfo.nlreg <- function(object, par, mu, v, m1=NULL, v1=NULL, ...)
   .probl <- ( nlregObj$ws$homVar && !is.null(of) )
   if(.probl)
     .probl <- ( names(of) =="logs" )
-  attach(nlregObj$data)
+  attach(nlregObj$data, warn.conflicts = FALSE)
   on.exit( detach(nlregObj$data) )
   if( is.null(m1) )
   {
@@ -3409,7 +3418,7 @@ theta.deriv <- function(nlregObj, par, mu, v, m1=NULL, v1=NULL)
   .probl <- ( nlregObj$ws$homVar && !is.null(of) )
   if(.probl)
     .probl <- ( names(of) =="logs" )
-  attach(nlregObj$data)
+  attach(nlregObj$data, warn.conflicts = FALSE)
   on.exit( detach(nlregObj$data) )
   if( !nlregObj$ws$missingData )
   {
@@ -3474,7 +3483,7 @@ Shat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
   if( missing(mu.0) )  mu.0 <- nlregObj0$fitted
   if( missing(v.1) )  v.1 <- nlregObj1$weights
   if( missing(v.0) )  v.0 <- nlregObj0$weights
-  attach(nlregObj1$data)
+  attach(nlregObj1$data, warn.conflicts = FALSE)
   on.exit( detach(nlregObj1$data) )
   if( is.null(m1.1) || is.null(m1.0) )
   {
@@ -3553,7 +3562,7 @@ qhat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
   if( missing(mu.0) )  mu.0 <- nlregObj0$fitted
   if( missing(v.1) )  v.1 <- nlregObj1$weights
   if( missing(v.0) )  v.0 <- nlregObj0$weights
-  attach(nlregObj1$data)
+  attach(nlregObj1$data, warn.conflicts = FALSE)
   on.exit( detach(nlregObj1$data) )
   if( is.null(m1.1) )
   {
@@ -3618,20 +3627,4 @@ qhat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
     }	
   dimnames(qhat) <- list(c(names(rc), names(vp)), NULL)
   qhat
-}
-
-.First.lib <- function(libname, pkgname)
-{
-  version <- as.character("1.0.0 (2005-05-31)")
-  cat("\n   Package \"nlreg\"", version, "\n")
-  cat("   Copyright (C) 2000-2005 R. Bellio & A. R. Brazzale\n\n")
-  cat("This is free software, and you are welcome to redistribute\n")
-  cat("it and/or modify it under the terms of the GNU General\n")
-  cat("Public License published by the Free Software Foundation.\n")
-  cat("Package \"nlreg\" comes with ABSOLUTELY NO WARRANTY.\n\n")
-  cat("type `help(package=\"nlreg\")' for summary information\n")
-  invisible(require(stats))
-  invisible(require(graphics))
-  invisible(require(statmod))
-  invisible()
 }

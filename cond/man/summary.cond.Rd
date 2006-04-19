@@ -8,7 +8,8 @@
 }
 \usage{
 \method{summary}{cond}(object, alpha = 0.05, test = NULL, all = FALSE, coef = TRUE, 
-        int = ifelse( (is.null(test) || all), TRUE, FALSE), digits = NULL, \dots)
+        int = ifelse( (is.null(test) || all), TRUE, FALSE), 
+        digits = NULL, \dots)
 }
 \arguments{
   \item{object}{
@@ -126,8 +127,8 @@
 \examples{
 ## Crying Babies Data
 data(babies)
-babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, family = binomial,
-                  data = babies)
+babies.glm <- glm(formula = cbind(r1, r2) ~ day + lull - 1, 
+                  family = binomial, data = babies)
 babies.cond <- cond(object = babies.glm, offset = lullyes)
 summary(babies.cond, test = 0, coef = FALSE)
 }

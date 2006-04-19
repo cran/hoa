@@ -1,0 +1,15 @@
+.First.lib <- function(libname, pkgname)
+{
+  version <- as.character("1.1-0 (2006-02-09)")
+  cat("\n   Package \"nlreg\"", version, "\n")
+  cat("   Copyright (C) 2000-2006 R. Bellio & A. R. Brazzale\n\n")
+  cat("This is free software, and you are welcome to redistribute\n")
+  cat("it and/or modify it under the terms of the GNU General\n")
+  cat("Public License published by the Free Software Foundation.\n")
+  cat("Package \"nlreg\" comes with ABSOLUTELY NO WARRANTY.\n\n")
+  cat("type `help(package=\"nlreg\")' for summary information\n")
+  invisible(require(stats))
+  invisible(require(graphics))
+  invisible(require(statmod))
+  invisible()
+}

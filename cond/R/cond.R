@@ -1,6 +1,6 @@
-## file cond/R/cond.R, v 1.0.0 2005/03/02
+## file cond/R/cond.R, v 1.1-0 2006/02/09
 ##
-##  Copyright (C) 2000-2005 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "cond" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -63,7 +63,8 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
   if(is.empty)
     stop("Invalid model: all parameters are fixed")
   is.scalar <- (dim(model.matrix(object))[2] == 1)
-  offsetName <- if(!is.character(m$offset)) deparse(m$offset)
+  offsetName <- if(!is.character(m$offset)) deparse(m$offset,
+                                                    width.cutoff = 500)
                 else m$offset
   .offsetName <- offsetName   
   if((offsetName == "1") && (attr(Terms, "intercept") == 0))
@@ -137,7 +138,8 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
                    "1" = summary.obj$coef["(Intercept)", "Std. Error"],
                          summary.obj$coef[offsetName, "Std. Error"])
   glmDeviance <- deviance(object)
-  glmDet <- 1/det(summary.obj$cov.unscaled)
+#  glmDet <- 1/det(summary.obj$cov.unscaled)
+  glmDet <- - determinant(summary.obj$cov.unscaled)$mod
   if(is.null(from))  
     from <- glmMLE - 3.5 * glmSE
   if(is.null(to))  
@@ -175,8 +177,10 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
                          ..offset <- modOff + offsetCoef[i]*.offset
                          assign("..offset", ..offset, pos=1)		
                          nf <- as.formula(
-                                 paste(deparse(formula(object)[[2]]), 
-                                       " ~ -1 + offset(..offset)"))
+                                 paste(deparse(formula(object)[[2]],
+                                               width.cutoff = 500), 
+                                       " ~ -1 + offset(..offset)",
+                                       collapse = ""))
                          .object$formula <- nf
                          environment(.object$formula) <- 
                                   environment(object$formula)
@@ -184,9 +188,10 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
                        else
                        {
                          nf <- as.formula(
-                                 paste(deparse(formula(object)), 
+                                 paste(deparse(formula(object), 
+                                               width.cutoff = 500), 
                                        "-1 + offset(", offsetCoef[i], 
-                                       "*.offset)"))
+                                       "*.offset)", collapse = ""))
                          .object$formula <- nf
                          environment(.object$formula) <- 
                                   environment(object$formula)
@@ -195,9 +200,9 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
            { 
              nf <- as.formula(paste(".~.-", .offsetName))
              nf <- update(.object$formula, nf)
-             nf <- as.formula(paste(deparse(nf), 
+             nf <- as.formula(paste(deparse(nf, width.cutoff = 500), 
                                     "+ offset(", offsetCoef[i], 
-                                    "* .offset)"))
+                                    "* .offset)", collapse = ""))
              .object$formula <- nf
              environment(.object$formula) <- 
                                   environment(object$formula)
@@ -206,11 +211,13 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
     summary.obj <- summary(.object)
     glmCDev[i] <- deviance(.object)
     if(!is.scalar)
-      glmCDet[i] <- det(summary.obj$cov.unscaled)
+#      glmCDet[i] <- det(summary.obj$cov.unscaled)
+      glmCDet[i] <- determinant(summary.obj$cov.unscaled)$mod
   }
   if(trace) cat("\n")
   lp <- -1/2 * glmCDev
-  lmp <- if(!is.scalar) -1/2 * (glmCDev + log(glmCDet))
+#  lmp <- if(!is.scalar) -1/2 * (glmCDev + log(glmCDet))
+  lmp <- if(!is.scalar) -1/2 * (glmCDev + glmCDet)
          else lp
   lp <- spline(offsetCoef[is.finite(lp)], lp[is.finite(lp)], n)
   lmp <- spline(offsetCoef[is.finite(lmp)], lmp[is.finite(lmp)], n)
@@ -261,12 +268,14 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
                         byrow=TRUE)
 ##
   rhoMax <- if(!is.scalar)
-               sqrt(glmDet * glmCDet) * glmSE
+#               sqrt(glmDet * glmCDet) * glmSE
+               sqrt(exp(glmDet + glmCDet)) * glmSE
              else rep(1, length=lengthOC)
   limINF <- predict(smooth.spline(lp, all.knots=FALSE),
                     glmMLE, 3)$y/6 * glmSE^3
   limNP <- if(!is.scalar)
-             predict(smooth.spline(offsetCoef, log(glmCDet), 
+#             predict(smooth.spline(offsetCoef, log(glmCDet), 
+             predict(smooth.spline(offsetCoef, glmCDet, 
                                    all.knots=FALSE),
                      glmMLE, 1)$y/2 * glmSE
            else NULL
@@ -418,10 +427,12 @@ summary.cond <- function(object, alpha = 0.05, test = NULL,
   if( !is.null(test) )
     dim.test <- length(test)
   alpha.quant <- c(qnorm(1 - alpha/2), qnorm(1 - alpha))
-  attach(object$workspace)
+  attach(object$workspace, warn.conflicts = FALSE)
   on.exit( detach() )
   cf <- object$coefficients
   is.scalar <- object$is.scalar
+  lr.ss <- try(smooth.spline(lr$y, lr$x), silent=TRUE)
+  lr.try <- !inherits(lr.ss, "try-error")
   if(int)
   {
     CI.mle <- cf[1,1] - cf[1,2] * c(alpha.quant, -alpha.quant)
@@ -434,12 +445,17 @@ summary.cond <- function(object, alpha = 0.05, test = NULL,
                              alpha.quant, 0)$y,
                      predict(smooth.spline(r.mp.clow$y, r.mp.clow$x),
                              -alpha.quant, 0)$y)
-    CI.lr <- predict(smooth.spline(lr$y, lr$x),
-                     c(1-alpha/2, 1-alpha, alpha/2, alpha), 0)$y
-    CI.lr.corr <- c(predict(smooth.spline(lr.cup$y, lr.cup$x),
-                             c(1-alpha/2, 1-alpha), 0)$y,
-                    predict(smooth.spline(lr.clow$y, lr.clow$x),
-                            c(1-alpha/2, 1-alpha), 0)$y)
+    if( lr.try)
+    {
+      CI.lr <- predict(lr.ss,
+                       c(1-alpha/2, 1-alpha, alpha/2, alpha), 0)$y
+      CI.lr.corr <- c(predict(smooth.spline(lr.cup$y, lr.cup$x),
+                               c(1-alpha/2, 1-alpha), 0)$y,
+                      predict(smooth.spline(lr.clow$y, lr.clow$x),
+                              c(1-alpha/2, 1-alpha), 0)$y)
+    }
+    else
+      CI.lr <- CI.lr.corr <- rep(NA, length(CI.mle))
     CI <- t(matrix(c(CI.mle, CI.cmle, CI.rp, CI.rmp, CI.rmp.corr,
                      CI.lr, CI.lr.corr),
                    ncol = 4*dim.alpha, byrow = TRUE))
@@ -469,11 +485,16 @@ summary.cond <- function(object, alpha = 0.05, test = NULL,
     test.rmp.corr <- ifelse(test.rmp < 0,
                           predict(smooth.spline(r.mp.clow), test, 0)$y,
                           predict(smooth.spline(r.mp.cup), test, 0)$y)
-    test.lr <- predict(smooth.spline(lr), test, 0)$y
-    test.lr.corr <- ifelse(test.lr < 0.5,
-                            predict(smooth.spline(lr.clow), test, 0)$y,
-                          1 - predict(smooth.spline(lr.cup), test, 0)$y)
-    test.lr <- ifelse(test.lr > 0.5, 1 - test.lr, test.lr)
+    if( lr.try )
+    {
+      test.lr <- predict(smooth.spline(lr), test, 0)$y
+      test.lr.corr <- ifelse(test.lr < 0.5,
+                              predict(smooth.spline(lr.clow), test, 0)$y,
+                            1 - predict(smooth.spline(lr.cup), test, 0)$y)
+      test.lr <- ifelse(test.lr > 0.5, 1 - test.lr, test.lr)
+    }
+    else
+      test.lr <- test.lr.corr <- rep(NA, dim.test)
     TEST <- t(matrix(c(test.mle,
                        ifelse(test.mle > 0, (1 - pnorm(test.mle)),
                                             pnorm(test.mle)),
@@ -563,7 +584,7 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
        else pick <- which
   if(pick == 0)
     stop(" no graph required ! ")
-  attach(x$workspace)
+  attach(x$workspace, warn.conflicts = FALSE)
   on.exit(invisible(detach()))
   coeff <- x$coefficients
   x.alpha <- qnorm(1 - alpha/2)
@@ -594,7 +615,7 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            n <- length(l.p$x)
            x.axis <- l.p$x
            condition <- (x.axis >= from) & (x.axis <= to) &
-                        (l.p$y > -3) & (l.mp$y > -3)
+                        ((l.p$y > -3) | (l.mp$y > -3))
            plot(x.axis[condition], l.p$y[condition], 
                 type = "n", lty = lty1, lwd = lwd1, 
                 ylim=c(max(-3, 
@@ -721,28 +742,33 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
 ##               ---------------
            conf.limit <- qnorm(1 - alpha/2)
            screen(1)
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                        ( ((r.e$y < 4) & (r.e$y > -4)) |
+                          ((r.ce$y < 4) & (r.ce$y > -4)) |
+                          ((r.p$y < 4) & (r.p$y > -4)) |
+                          ((r.mp$y < 4) & (r.mp$y > -4)) )
+           plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis,
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.e$y < 4) & (r.e$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.e$y < 4) & (r.e$y > -4)
 	   lines(x.axis[condition], r.e$y[condition], lty=lty2, col=col1,
                  lwd=lwd1, ...)
            if( !is.scalar )
            {
-             condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.ce$y < 4) & (r.ce$y > -4)
+#             condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.ce$y < 4) & (r.ce$y > -4)
              lines(x.axis[condition], r.ce$y[condition], lty=lty2, 
                    col=col2, lwd=lwd2, ...)
            }
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.p$y < 4) & (r.p$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.p$y < 4) & (r.p$y > -4)
 	   lines(x.axis[condition], r.p$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
            n <- length(r.mp$x)
            x.axis <- r.mp$x
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp$y < 4) & (r.mp$y > -4)
      	   lines(x.axis[condition], r.mp$y[condition], lty=lty1, 
                  lwd=lwd2, col=col2, ... )
     	   abline(h=0, lty="dotted", ...)
@@ -789,19 +815,23 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            }
 ##               ---------------
            screen(2)
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                        ( ((r.mp$y < 4) & (r.mp$y > -4)) |
+                          ((r.mp.clow$y < 4) & (r.mp.clow$y > -4)) |
+                          ((r.mp.cup$y < 4) & (r.mp.cup$y > -4)) )
+           plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis,
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp$y < 4) & (r.mp$y > -4)
            lines(x.axis[condition], r.mp$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp.clow$y < 4) & (r.mp.clow$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp.clow$y < 4) & (r.mp.clow$y > -4)
            lines(x.axis[condition], r.mp.clow$y[condition], lty=lty1, 
                  lwd=lwd1, col=col2, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp.cup$y < 4) & (r.mp.cup$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp.cup$y < 4) & (r.mp.cup$y > -4)
            lines(x.axis[condition], r.mp.cup$y[condition], lty=lty1, 
                  lwd=lwd1, col=col2, ...)
 	   abline(h=0, lty="dotted", ...)
@@ -810,7 +840,7 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            if(add.labs)
               title(xlab = paste("coefficient of", offset),
                     ylab = "likelihood root",
-                    main = "Profile and modified likelihood roots",
+                    main = "Modified likelihood roots",
                     ...)
 	   if(add.leg == TRUE)
            {
@@ -976,7 +1006,7 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            n <- length(l.p$x)
            x.axis <- l.p$x
            condition <- (x.axis >= from) & (x.axis <= to) &
-                        (l.p$y > -3) & (l.mp$y > -3)
+                        ((l.p$y > -3) | (l.mp$y > -3))
            plot(x.axis[condition], l.p$y[condition], 
                 type = "n", lty = lty1, lwd = lwd1, 
                 ylim=c(max(-3, 
@@ -1111,28 +1141,33 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            conf.limit <- qnorm(1 - alpha/2)
            n <- length(l.p$x)
            x.axis <- l.p$x
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                        ( ((r.e$y < 4) & (r.e$y > -4)) |
+                          ((r.ce$y < 4) & (r.ce$y > -4)) |
+                          ((r.p$y < 4) & (r.p$y > -4)) |
+                          ((r.mp$y < 4) & (r.mp$y > -4)) )
+           plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis,
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.e$y < 4) & (r.e$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.e$y < 4) & (r.e$y > -4)
 	   lines(x.axis[condition], r.e$y[condition], lty=lty2, col=col1,
                  lwd=lwd1, ...)
            if( !is.scalar )
            {
-             condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.ce$y < 4) & (r.ce$y > -4)
+#             condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.ce$y < 4) & (r.ce$y > -4)
              lines(x.axis[condition], r.ce$y[condition], lty=lty2, 
                    col=col2, lwd=lwd2, ...)
            }
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.p$y < 4) & (r.p$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.p$y < 4) & (r.p$y > -4)
 	   lines(x.axis[condition], r.p$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
            n <- length(r.mp$x)
            x.axis <- r.mp$x
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp$y < 4) & (r.mp$y > -4)
      	   lines(x.axis[condition], r.mp$y[condition], lty=lty1, 
                  lwd=lwd2, col=col2, ... )
     	   abline(h=0, lty="dotted", ...)
@@ -1186,19 +1221,23 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            conf.limit <- qnorm(1 - alpha/2)
            n <- length(r.mp$x)
            x.axis <- r.mp$x
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                        ( ((r.mp$y < 4) & (r.mp$y > -4)) |
+                          ((r.mp.clow$y < 4) & (r.mp.clow$y > -4)) |
+                          ((r.mp.cup$y < 4) & (r.mp.cup$y > -4)) )
+          plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis,
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp$y < 4) & (r.mp$y > -4)
            lines(x.axis[condition], r.mp$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp.clow$y < 4) & (r.mp.clow$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp.clow$y < 4) & (r.mp.clow$y > -4)
            lines(x.axis[condition], r.mp.clow$y[condition], lty=lty1, 
                  lwd=lwd1, col=col2, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                        (r.mp.cup$y < 4) & (r.mp.cup$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                        (r.mp.cup$y < 4) & (r.mp.cup$y > -4)
            lines(x.axis[condition], r.mp.cup$y[condition], lty=lty1, 
                  lwd=lwd1, col=col2, ...)
 	   abline(h=0, lty="dotted", ...)
@@ -1207,7 +1246,7 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
            if(add.labs)
               title(xlab = paste("coefficient of", offset),
                     ylab = "likelihood root",
-                    main = "Profile and modified likelihood root",
+                    main = "Modified likelihood root",
                     ...)
 	   if(add.leg == TRUE)
            {
@@ -1537,18 +1576,4 @@ print.summary.cond <- function(x, all = x$all, Coef = x$cf,
     print(xd, digits=digits)
   else print(xd[1], digits=digits)
   cat("\n Approximation based on", x$n.approx, "points\n")
-}
-
-.First.lib <- function(libname, pkgname) 
-{
-  version <- as.character("1.0.0 (2005-03-02)")
-  cat("\n   Package \"cond\"", version, "\n")
-  cat("   Copyright (C) 2000-2005 A. R. Brazzale\n\n")
-  cat("This is free software, and you are welcome to redistribute\n")
-  cat("it and/or modify it under the terms of the GNU General\n")
-  cat("Public License published by the Free Software Foundation.\n")
-  cat("Package \"cond\" comes with ABSOLUTELY NO WARRANTY.\n\n")
-  cat("type `help(package=\"cond\")' for summary information\n")
-##  require(stats)
-  invisible()
 }

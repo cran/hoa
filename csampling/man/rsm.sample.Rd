@@ -11,7 +11,7 @@
 }
 \usage{
 rsm.sample(data = stop("no data given"), R = 10000, 
-           ran.gen = stop("candidate distribution is missing, with no default"), 
+    ran.gen = stop("candidate distribution is missing, with no default"), 
            trace = TRUE, step = 100, \dots)
 }
 \arguments{
@@ -46,7 +46,7 @@ rsm.sample(data = stop("no data given"), R = 10000,
        generator functions are available in the \code{marg} 
        package of the \acronym{R} package bundle \code{hoa}: 
        \code{student} (Student's t), \code{extreme} (Gumbel or extreme 
-       value), \code{logistic}, \code{logWeibull}, 
+       value), \code{logistic}, \code{logWeibull}, \linebreak
        \code{logExponential}, \code{logRayleigh} and \code{Huber} 
        (Huber's least favourable).  The demonstration file 
        \file{margdemo.R} that accompanies the \code{marg} package shows
@@ -106,6 +106,7 @@ rsm.sample(data = stop("no data given"), R = 10000,
   All information is supplied through the \code{data} argument.  The 
   user has to keep to the structure described above.  If a conditional
   simulation is to be performed for a fitted \code{rsm} object, the
+  \linebreak
   \code{\link[csampling]{make.sample.data}} function can be used to 
   generate this special object.  It is advisable to specify the 
   logical switch \code{fixed} in the conditional sampling object, 

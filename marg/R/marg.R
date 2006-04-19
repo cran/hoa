@@ -1,6 +1,6 @@
-## file marg/R/marg.R, v 1.0.0 2005/03/02
+## file marg/R/marg.R, v 1.1-0 2006/02/09
 ##
-##  Copyright (C) 2000-2005 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "marg" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -109,15 +109,15 @@ family.rsm <- function(object, ...)
   if( length(object$call$family) > 1 )
     eval(object$call$family)
     else
-      do.call(deparse(object$call$family), list())
+      do.call(deparse(object$call$family, width.cutoff=500), list())
 }
 
 print.family.rsm <- function(x, ...)
 {
   cat(x$family, "family\n")
-  cat("\n g  : ", deparse(x[["g0"]])) 
-  cat("\n g' : ", deparse(x[["g1"]]))
-  cat("\n g'': ", deparse(x[["g2"]]), "\n")
+  cat("\n g  : ", deparse(x[["g0"]], width.cutoff=500)) 
+  cat("\n g' : ", deparse(x[["g1"]], width.cutoff=500))
+  cat("\n g'': ", deparse(x[["g2"]], width.cutoff=500), "\n")
   if(charmatch(x$family, "student", FALSE))
     cat("\n df :", x$df, "\n")
   if(charmatch(x$family, "Huber", FALSE))
@@ -304,7 +304,7 @@ rsm <- function(formula = formula(data), family = gaussian,
     call$family <- as.name("logWeibull")
   }
   .family <- if(is.call(call$family)) eval(call$family)
-            else  do.call(deparse(call$family), list())
+            else  do.call(deparse(call$family, width.cutoff=500), list())
   offset4fit <- offset
   fit <- rsm.fitter(X=X, Y=Y, offset=offset4fit, family=.family,
                     dispersion=dispersion, maxit=control$maxit,
@@ -1472,7 +1472,8 @@ cond.rsm <- function(object, offset, formula = NULL, family = NULL,
     stop("Invalid model: all parameters are fixed")
   is.scalar <- if(is.empty) !is.fixed 
                else (is.fixed && (dim(model.matrix(object))[2] == 1))
-  offsetName <- if(!is.character(m$offset)) deparse(m$offset)
+  offsetName <- if(!is.character(m$offset)) deparse(m$offset, 
+                                                    width.cutoff=500)
                 else m$offset
   .offsetName <- offsetName   
   if((offsetName == "1") && (attr(Terms, "intercept") == 0))
@@ -1633,8 +1634,10 @@ cond.rsm <- function(object, offset, formula = NULL, family = NULL,
                          ..offset <- modOff + offsetCoef[i]*.offset
                          assign("..offset", ..offset, pos=1)		
                          nf <- as.formula(
-                                 paste(deparse(formula(object)[[2]]), 
-                                       " ~ -1 + offset(..offset)"))
+                                 paste(deparse(formula(object)[[2]], 
+                                               width.cutoff=500), 
+                                       " ~ -1 + offset(..offset)",
+                                       collapse=""))
                          .object$formula <- nf
                          environment(.object$formula) <- 
                                   environment(object$formula)
@@ -1642,9 +1645,10 @@ cond.rsm <- function(object, offset, formula = NULL, family = NULL,
                        else
                        {
                          nf <- as.formula(
-                                 paste(deparse(formula(object)), 
+                                 paste(deparse(formula(object),   
+                                               width.cutoff=500), 
                                        "-1 + offset(", offsetCoef[i], 
-                                       "*.offset)"))
+                                       "*.offset)", collapse=""))
                          .object$formula <- nf
                          environment(.object$formula) <- 
                                   environment(object$formula)
@@ -1653,9 +1657,9 @@ cond.rsm <- function(object, offset, formula = NULL, family = NULL,
            { 
              nf <- as.formula(paste(".~.-", .offsetName))
              nf <- update(.object$formula, nf)
-             nf <- as.formula(paste(deparse(nf), 
+             nf <- as.formula(paste(deparse(nf, width.cutoff=500), 
                                     "+ offset(", offsetCoef[i], 
-                                    "* .offset)"))
+                                    "* .offset)", collapse=""))
              .object$formula <- nf
              environment(.object$formula) <- 
                                   environment(object$formula)
@@ -1950,7 +1954,7 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
        else pick <- which
   if(pick == 0)
     stop(" no graph required ! ")
-  attach(x$workspace)
+  attach(x$workspace, warn.conflicts = FALSE)
   on.exit(invisible(detach()))
   is.scale <- (paste(x$offset) == "scale")
   coeff <- x$coefficients
@@ -1988,7 +1992,7 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
            n <- length(l.p$x)
            x.axis <- l.p$x  
            condition <- (x.axis >= from) & (x.axis <= to) &
-                          (l.p$y > -3) & (l.mp$y > -3) 
+                          ((l.p$y > -3) | (l.mp$y > -3)) 
            plot(x.axis[condition], l.p$y[condition], 
                 type = "n", lty = lty1, lwd=lwd1, 
                 ylim = c(max(-3, 
@@ -2118,26 +2122,31 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
 ##               ---------------
            conf.limit <- qnorm(1 - alpha/2)
            screen(2)
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                          ( ((r.e$y < 4) & (r.e$y > -4)) |
+                            ((r.e.mp$y < 4) & (r.e.mp$y > -4)) |
+                            ((r.p$y < 4) & (r.p$y > -4)) |
+                            ((r.mp$y < 4) & (r.mp$y > -4)) )
+           plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis, 
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.e$y < 4) & (r.e$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.e$y < 4) & (r.e$y > -4)
 	   lines(x.axis[condition], r.e$y[condition], lty=lty2, 
                  lwd=lwd1, col=col1, ...)
            if( !is.scalar )
            {
-             condition <- (x.axis >= from) & (x.axis <= to) &
-                            (r.e.mp$y < 4) & (r.e.mp$y > -4)
+#             condition <- (x.axis >= from) & (x.axis <= to) &
+#                            (r.e.mp$y < 4) & (r.e.mp$y > -4)
 	     lines(x.axis[condition], r.e.mp$y[condition], lty=lty2, 
                    lwd=lwd2, col=col2, ...)
            }
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.p$y < 4) & (r.p$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.p$y < 4) & (r.p$y > -4)
 	   lines(x.axis[condition], r.p$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.mp$y < 4) & (r.mp$y > -4)
 	   lines(x.axis[condition], r.mp$y[condition], lty=lty1,
                  lwd=lwd2, col=col2, ... )
 	   abline(h=0, lty="dotted", ...)
@@ -2303,7 +2312,7 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
            n <- length(l.p$x)
            x.axis <- l.p$x  
            condition <- (x.axis >= from) & (x.axis <= to) &
-                          (l.p$y > -3) & (l.mp$y > -3) 
+                          ((l.p$y > -3) | (l.mp$y > -3)) 
            plot(x.axis[condition], l.p$y[condition], 
                 type = "n", lty = lty1, lwd=lwd1, 
                 ylim = c(max(-3, 
@@ -2440,26 +2449,31 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
            n <- length(r.mp$x)
            x.axis <- r.mp$x  
            conf.limit <-  qnorm(1-alpha/2)
-           plot(0, 0, type="n", xlim=c(from, to), ylim=c(-4, 4),
+           condition <- (x.axis >= from) & (x.axis <= to) &
+                          ( ((r.e$y < 4) & (r.e$y > -4)) |
+                            ((r.e.mp$y < 4) & (r.e.mp$y > -4)) |
+                            ((r.p$y < 4) & (r.p$y > -4)) |
+                            ((r.mp$y < 4) & (r.mp$y > -4)) )
+           plot(0, 0, type="n", xlim=range(x.axis[condition]), ylim=c(-4, 4),
                 xlab="", ylab="", cex.lab=cex.lab, cex.axis=cex.axis, 
                 cex.main=cex.main, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.e$y < 4) & (r.e$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.e$y < 4) & (r.e$y > -4)
 	   lines(x.axis[condition], r.e$y[condition], lty=lty2, 
                  lwd=lwd1, col=col1, ...)
            if( !is.scalar )
            {
-             condition <- (x.axis >= from) & (x.axis <= to) &
-                            (r.e.mp$y < 4) & (r.e.mp$y > -4)
+#             condition <- (x.axis >= from) & (x.axis <= to) &
+#                            (r.e.mp$y < 4) & (r.e.mp$y > -4)
 	     lines(x.axis[condition], r.e.mp$y[condition], lty=lty2, 
                    lwd=lwd2, col=col2, ...)
            }
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.p$y < 4) & (r.p$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.p$y < 4) & (r.p$y > -4)
 	   lines(x.axis[condition], r.p$y[condition], lty=lty1, 
                  lwd=lwd1, col=col1, ...)
-           condition <- (x.axis >= from) & (x.axis <= to) &
-                          (r.mp$y < 4) & (r.mp$y > -4)
+#           condition <- (x.axis >= from) & (x.axis <= to) &
+#                          (r.mp$y < 4) & (r.mp$y > -4)
 	   lines(x.axis[condition], r.mp$y[condition], lty=lty1,
                  lwd=lwd2, col=col2, ... )
 	   abline(h=0, lty="dotted", ...)
@@ -2648,7 +2662,7 @@ summary.marg <- function(object, alpha = 0.05, test = NULL,
   if( !is.null(test) )
     dim.test <- length(test)
   alpha.quant <- c(qnorm(1 - alpha/2), qnorm(1 - alpha))
-  attach(object$workspace)
+  attach(object$workspace, warn.conflicts = FALSE)
   on.exit( detach() )
   cf <- object$coefficients
   is.scale <- ( paste(object$offset) == "scale" )
@@ -2885,19 +2899,3 @@ print.summary.marg <- function(x, all = x$all, Coef = x$cf,
   else  print(xd[1], digits=digits)
   cat("\n Approximation based on", x$n.approx, "points\n")
 }
-
-.First.lib <- function(libname, pkgname) 
-{
-  version <- as.character("1.0.0 (2005-03-02)")
-  cat("\n   Package \"marg\"", version, "\n")
-  cat("   Copyright (C) 2000-2005 A. R. Brazzale\n\n")
-  cat("This is free software, and you are welcome to redistribute\n")
-  cat("it and/or modify it under the terms of the GNU General\n")
-  cat("Public License published by the Free Software Foundation.\n")
-  cat("Package \"marg\" comes with ABSOLUTELY NO WARRANTY.\n\n")
-  cat("type `help(package=\"marg\")' for summary information\n")
-  require(survival)
-  invisible()
-}
-
-
