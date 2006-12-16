@@ -1,6 +1,6 @@
 .First.lib <- function(libname, pkgname) 
 {
-  version <- as.character("1.1-0 (2006-02-09)")
+  version <- as.character("1.1-1 (2006-12-16)")
   cat("\n   Package \"marg\"", version, "\n")
   cat("   Copyright (C) 2000-2006 A. R. Brazzale\n\n")
   cat("This is free software, and you are welcome to redistribute\n")

@@ -22,6 +22,7 @@ citEntry(entry="article",
          )
 citFooter("Examples of applications, and generally of the use of 
            likelihood asymptotics, are given in\n\n
-           Brazzale, A.R., Davison, A.C. and Reid, N. (2006).  Applied 
-           Asymptotics.  Cambridge University Press, Cambridge (to 
-           appear).  URL http://www.isib.cnr.it/~brazzale/CS/.")
+           Brazzale, A.R., Davison, A.C. and Reid, N. (2007).  Applied 
+           Asymptotics: Case Studies in Small-Sample Statistics.  
+           Cambridge University Press, Cambridge (to appear).  
+           URL http://statwww.epfl.ch/AA/")

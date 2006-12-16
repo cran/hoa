@@ -1,4 +1,4 @@
-## file csampling/R/csampling.R, v 1.1-0 2006/02/09
+## file csampling/R/csampling.R, v 1.1-0 2006/12/16
 ##
 ##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##

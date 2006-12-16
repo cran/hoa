@@ -16,7 +16,7 @@
 \author{by Alessandra R. Brazzale}
 \date{\emph{Rnews}, \textbf{5/1} May 2005, pp.~20--27}
 
-\usepackage{/work/local/R-2.2.1//lib/R/share/texmf/Sweave}
+\usepackage{/Library/Frameworks/R.framework/Resources/share/texmf/Sweave}
 \begin{document}
 
 \maketitle
@@ -177,11 +177,7 @@ Suppose now that we observed a sample of size $n = 15$ from the Student t distri
 > library(marg)
 \end{Sinput}
 \begin{Soutput}
-Loading required package: statmod
-Loading required package: survival
-Loading required package: splines
-
-   Package "marg" 1.1-0 (2006-02-09) 
+   Package "marg" 1.1-1 (2006-12-16) 
    Copyright (C) 2000-2006 A. R. Brazzale
 
 This is free software, and you are welcome to redistribute
@@ -245,7 +241,7 @@ The \code{hoa} package bundle is be available on CRAN.  More examples of applica
 > library(cond)
 \end{Sinput}
 \begin{Soutput}
-   Package "cond" 1.1-0 (2006-02-09) 
+   Package "cond" 1.1-1 (2006-12-16) 
    Copyright (C) 2000-2006 A. R. Brazzale
 
 This is free software, and you are welcome to redistribute
@@ -254,13 +250,6 @@ Public License published by the Free Software Foundation.
 Package "cond" comes with ABSOLUTELY NO WARRANTY.
 
 type `help(package="cond")' for summary information
-
-Attaching package: 'cond'
-
-
-	The following object(s) are masked from package:marg :
-
-	 cond 
 \end{Soutput}
 \begin{Sinput}
 > head(airway, n = 3)
@@ -305,7 +294,7 @@ lubricant1   0.08448    0.97365   0.087   0.9309
 duration     0.07183    0.02956   2.430   0.0151 *
 type1       -1.62968    0.94737  -1.720   0.0854 .
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 (Dispersion parameter for binomial family taken to be 1)
 
@@ -375,26 +364,6 @@ A simple illustration of nonlinear regression is Example~7.7 of \citet{davison.h
 \begin{Schunk}
 \begin{Sinput}
 > library(boot)
-\end{Sinput}
-\begin{Soutput}
-Attaching package: 'boot'
-
-
-	The following object(s) are masked from package:cond :
-
-	 aids urine 
-
-
-	The following object(s) are masked from package:marg :
-
-	 darwin nuclear 
-
-
-	The following object(s) are masked from package:survival :
-
-	 aml 
-\end{Soutput}
-\begin{Sinput}
 > head(calcium, n = 3)
 \end{Sinput}
 \begin{Soutput}
@@ -421,7 +390,7 @@ Model~(\ref{eq:calcium.mod}) is fitted by maximum likelihood using the \code{nlr
 > library(nlreg)
 \end{Sinput}
 \begin{Soutput}
-   Package "nlreg" 1.1-0 (2006-02-09) 
+   Package "nlreg" 1.1-1 (2006-12-16) 
    Copyright (C) 2000-2006 R. Bellio & A. R. Brazzale
 
 This is free software, and you are welcome to redistribute
@@ -448,7 +417,7 @@ Regression coefficients:
 b0  4.31699    0.32274   13.38  < 2e-16 ***
 b1  0.20746    0.03589    5.78 7.47e-09 ***
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 
 Variance parameters:
      Estimate Std. Error

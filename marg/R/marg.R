@@ -1,4 +1,4 @@
-## file marg/R/marg.R, v 1.1-0 2006/02/09
+## file marg/R/marg.R, v 1.1-1 2006/12/16
 ##
 ##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
@@ -1859,7 +1859,7 @@ cond.rsm <- function(object, offset, formula = NULL, family = NULL,
                                  spline(r.p[is.finite(NPmp.rp)], 
                                         NPmp.rp[is.finite(NPmp.rp)], 
                                         n)
-                               else NULL,
+                               else NULL
                 ))
   marg.obj <- c(marg.obj, 
                 list( coefficients = Coef,
@@ -2284,7 +2284,7 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
            {
              screen(3)
              plot(np.mp, type="n", xlab="", ylab="", cex.lab=cex.lab,
-                  cex.axis=cex.axis, cex.main=cex.main, , ...)
+                  cex.axis=cex.axis, cex.main=cex.main, ...)
              lines(np.mp, lty=lty1, lwd=lwd1, col=col1, ...)
              abline(h=0.2, lty=3, ...)
              abline(h=-0.2, lty=3, ...)
@@ -2620,7 +2620,7 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
            {
              screen(3)
              plot(np.mp, type="n", xlab="", ylab="", cex.lab=cex.lab,
-                  cex.axis=cex.axis, cex.main=cex.main, , ...)
+                  cex.axis=cex.axis, cex.main=cex.main, ...)
              lines(np.mp, lty=lty1, lwd=lwd1, col=col1, ...)
              abline(h=0.2, lty=3, ...)
              abline(h=-0.2, lty=3, ...)
@@ -2700,8 +2700,7 @@ summary.marg <- function(object, alpha = 0.05, test = NULL,
                            "Wald pivot (cond.)       ",
                            "Likelihood root          ",
                            "Modified likelihood root ",
-                           "Lugannani-Rice approx.   ",
-                          ))
+                           "Lugannani-Rice approx.   ") )
   }
   old.test <- test
   if(!is.null(test))
@@ -2725,7 +2724,7 @@ summary.marg <- function(object, alpha = 0.05, test = NULL,
                        test.rmp,
                        ifelse(test.rmp > 0, (1-pnorm(test.rmp)),
                                             pnorm(test.rmp)),
-                       rep(NA, dim.test), test.lr.mp,
+                       rep(NA, dim.test), test.lr.mp
                       ),
                       nrow = 2 * dim.test))
      dimnames(TEST) <- list(
@@ -2733,8 +2732,7 @@ summary.marg <- function(object, alpha = 0.05, test = NULL,
                            "Wald pivot (cond.)       ",
                            "Likelihood root          ",
                            "Modified likelihood root ",
-                           "Lugannani-Rice approx.   ",
-                          ),
+                           "Lugannani-Rice approx.   "),
               c(paste("statistic (", object$offset, "=", test, ")  "),
                 paste("tail prob. (", object$offset, "=", test, 
                                                          ")        ")))
@@ -2866,8 +2864,7 @@ print.summary.marg <- function(x, all = x$all, Coef = x$cf,
                     "Likelihood root          ",
                     "Modified likelihood root ",
                 if(all)
-                  c("Lugannani-Rice approx.   ",
-                   ))
+                  c("Lugannani-Rice approx.   ") )
     cat("\nTest statistics")
     cat("\n---------------")
     for(i in seq(along = x$hypotheses))

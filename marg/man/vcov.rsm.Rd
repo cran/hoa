@@ -45,6 +45,8 @@ venice.rsm <- rsm(sea ~ Year + I(Year^2) + c11 + s11 + c19 + s19,
 ##
 vcov(venice.rsm)
 vcov(venice.rsm, corr = TRUE)
+##
+detach()
 }
 \keyword{methods}
 \keyword{models}

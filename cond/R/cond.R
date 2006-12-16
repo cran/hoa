@@ -1,4 +1,4 @@
-## file cond/R/cond.R, v 1.1-0 2006/02/09
+## file cond/R/cond.R, v 1.1-1 2006/12/16
 ##
 ##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
@@ -359,7 +359,7 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
             r.ce      = spline(offsetCoef[is.finite(r.cwald)], 
                                r.cwald[is.finite(r.cwald)], n),
             r.p       = spline(offsetCoef[is.finite(r.p)], 
-                               r.p[is.finite(r.p)], n), ,
+                               r.p[is.finite(r.p)], n), 
             r.mp      = spline(offsetCoef[is.finite(r.mp)], 
                                r.mp[is.finite(r.mp)], n),
             r.mp.clow = spline(offsetCoef[is.finite(r.mp.clow)], 
@@ -377,7 +377,7 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
                     LRcup[is.finite(LRcup)], n)
   lr.cup$y[lr.cup$y < 0] <- 0
   lr.cup$y[lr.cup$y > 1] <- 1
-   cond.obj$workspace <-
+  cond.obj$workspace <-
     c(cond.obj$workspace,
       list( lr        = lr, 
             lr.clow   = lr.clow,
@@ -395,7 +395,7 @@ cond.glm <- function(object, offset, formula = NULL, family = NULL,
             np.rp     = if(!is.scalar) 
                           spline(offsetCoef[is.finite(np.rp)], 
                                  np.rp[is.finite(np.rp)], n)
-                        else NULL,,
+                        else NULL,
             limNP     = list(x = glmMLE, y = limNP) ))
   cond.obj <- c(cond.obj, 
                 list( coefficients = Coef,

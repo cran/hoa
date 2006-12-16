@@ -3,7 +3,7 @@ Title: Functions for Conditional Simulation in Regression-Scale Models
 Description: Monte Carlo conditional inference for the parameters of a
   linear nonnormal regression model
 Version: 1.1-0
-Date: 2006-04-19
+Date: 2006-12-16
 Depends: marg
 LazyLoad: yes
 LazyData: yes

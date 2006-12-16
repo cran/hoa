@@ -2,8 +2,8 @@ Package: nlreg
 Title: Higher Order Inference for Nonlinear Heteroscedastic Models
 Description: Likelihood inference based on higher order approximations 
   for nonlinear models with possibly non constant variance
-Version: 1.1-0
-Date: 2006-04-19
+Version: 1.1-1
+Date: 2006-12-16
 LazyLoad: yes
 LazyData: yes
 Author: S original by Alessandra R. Brazzale <alessandra.brazzale@isib.cnr.it>

@@ -1,6 +1,6 @@
 ## file marg/inst/margdemo.R, v 1.0.0 2005/03/02
 ##
-##  Copyright (C) 2000-2005 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "marg" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 

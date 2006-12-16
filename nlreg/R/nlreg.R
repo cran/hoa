@@ -1,4 +1,4 @@
-## file nlreg/R/nlreg.R, v 1.1-0 2006/02/09
+## file nlreg/R/nlreg.R, v 1.1-1 2006/12/16
 ##
 ##  Copyright (C) 2000-2006 Ruggero Bellio & Alessandra R. Brazzale 
 ##
@@ -962,14 +962,14 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
       if( wantHoa )
       {
         if( class(ctrl)[1] == "try-error" )
-          cat("\n\`nlreg\' did not converge: NAs produced in diagnotics")
+          cat("\n\'nlreg\' did not converge: NAs produced in diagnotics")
       }
     }
     else
       if( wantHoa )
       {
         if( class(ctrl)[1] == "try-error" )
-          cat(paste("\n\`nlreg\' did not converge in iteration",
+          cat(paste("\n\'nlreg\' did not converge in iteration",
                     sset, "out of", length(v), 
                     ": NAs produced in diagnotics \n"))
       }
@@ -1707,10 +1707,10 @@ profile.nlreg <- function(fitted, offset = "all", hoa = TRUE,
                            nomatch=FALSE)) )
   	      cat(paste(m$offset, "=", format(of), "\n"))
   	    else  cat(paste(format(of), "\n"))
-            cat("\`nlreg\' did not converge: offset value not considered for profiling\n")  
+            cat("\'nlreg\' did not converge: offset value not considered for profiling\n")  
           }
           else
-            cat(paste("\n\`nlreg\' did not converge: offset value",
+            cat(paste("\n\'nlreg\' did not converge: offset value",
                       m$offset, "=", format(of), 
                       "not considered for profiling\n"))
         }
