@@ -1,6 +1,6 @@
-## file marg/R/marg.R, v 1.1-1 2006/12/16
+## file marg/R/marg.R, v 1.1-2 2007/10/16
 ##
-##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2007 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "marg" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -19,9 +19,10 @@
 ##  USA or look up the web page http://www.gnu.org/copyleft/gpl.html.
 ##
 ##  Please send any comments, suggestions or errors found to:
-##  Alessandra R. Brazzale, ISIB-CNR, corso Stati Uniti 4, 35127
-##  Padova (PD), Italy.  Email: alessandra.brazzale@isib.cnr.it.
-##  Web: http://www.isib.cnr.it/People/brazzale.html.
+##  Alessandra R. Brazzale, DSSCQ, University of Modena and Reggio
+##  Emilia, Viale Allegri 9, 42100 Reggio Emilia (RE), Italy.
+##  Email: alessandra.brazzale@unimore.it.  
+##  Web: http://www.isib.cnr.it/~brazzale/index.html.
 
 rsm.distributions <- structure(.Data = 
              list(g0 = function(y,df,...)  (df+1)/2*log(1+y^2/df),
@@ -684,6 +685,9 @@ rsm.null <- function(X=NULL, Y, offset, family, dispersion, maxit,
     loglik <- loglik + nobs*log( gamma((df+1)/2)/gamma(1/2)/
                                  gamma(df/2)/sqrt(df) )
   }
+  score.dispersion <- if( exists("score.dispersion", frame=sys.nframe()) )
+                        score.dispersion 
+                      else NULL 
   fit <- list( coefficients = coefs,
                dispersion = dispersion,
                fixed = !is.null.disp,
@@ -694,9 +698,7 @@ rsm.null <- function(X=NULL, Y, offset, family, dispersion, maxit,
                q2 = w.2,
                rank = rank,
                R = R,
-               score.dispersion = if(exists("score.dispersion",
-                                      frame=sys.nframe()))
-                                     score.dispersion else NULL,
+               score.dispersion = score.dispersion,
                iter = iter )
   fit
 }
@@ -799,7 +801,7 @@ print.rsm <- function(x, digits = max(3, getOption("digits")-3), ...)
   if(is.null(rank) && !is.null(coef))
     rank <- sum(!nas)
   nobs <- length(x$residuals) - sum(x$weights==0)
-  rdf <- x$df.resid
+  rdf <- x$df.residuals
   if(is.null(rdf))
     rdf <- nobs - rank - ifelse(x$fixed, 0, 1)
   cat("\nDegrees of Freedom:", nobs, "Total;", rdf, "Residual\n")
@@ -823,7 +825,7 @@ summary.rsm <- function(object, correlation=FALSE, digits=NULL, ...)
   if(is.null(p)) 
     p <- if(!is.null(coef)) sum(!nas)
          else 0
-  rdf <- object$df.resid
+  rdf <- object$df.residuals
   if(is.null(rdf))
     rdf <- n - p - sum(wt==0) - ifelse(fixed, 0, 1)
   R <- object$R
@@ -1043,7 +1045,7 @@ anova.rsmlist <- function(object, ... , test = c("Chisq", "none"))
     stop("The first model has a different response from the rest")
   forms <- forms[,subs]
   object <- object[subs]
-  dfres <- sapply(object, "[[", "df.resid")
+  dfres <- sapply(object, "[[", "df.residuals")
   m2loglik <- -2*sapply(object, "[[", "loglik")
   tl <- lapply(object, labels)
   rt <- length(m2loglik)
@@ -1271,7 +1273,7 @@ rsm.diag.plots <- function(rsmfit, rsmdiag = NULL, weighting = NULL,
                    rx <- range(hh)
                    ry <- range(rsmdiag$cook)
                    rank.fit <- rsmfit$rank
-                   nobs <- rank.fit + rsmfit$df.residual +
+                   nobs <- rank.fit + rsmfit$df.residuals +
                            ifelse(rsmfit$fixed,0,1)
                    cooky <- 8/(nobs - 2 * rank.fit)
                    hy <- (2 * rank.fit)/(nobs - 2 * rank.fit)
@@ -1371,7 +1373,7 @@ rsm.diag.plots <- function(rsmfit, rsmdiag = NULL, weighting = NULL,
                    rx <- range(hh)
                    ry <- range(rsmdiag$cook)
                    rank.fit <- rsmfit$rank
-                   nobs <- rank.fit + rsmfit$df.residual +
+                   nobs <- rank.fit + rsmfit$df.residuals +
                            ifelse(rsmfit$fixed,0,1)
                    cooky <- 8/(nobs - 2 * rank.fit)
                    hy <- (2 * rank.fit)/(nobs - 2 * rank.fit)
@@ -1389,7 +1391,7 @@ rsm.diag.plots <- function(rsmfit, rsmdiag = NULL, weighting = NULL,
                         ylab = "Cook statistic", ...)
                    ry <- range(rsmdiag$cook)
                    rank.fit <- rsmfit$rank
-                   nobs <- rank.fit + rsmfit$df.residual +
+                   nobs <- rank.fit + rsmfit$df.residuals +
                            ifelse(rsmfit$fixed,0,1)
                    cooky <- 8/(nobs - 2 * rank.fit)
                    if((cooky >= ry[1]) && (cooky <= ry[2]))
@@ -1954,8 +1956,19 @@ plot.marg <- function(x = stop("nothing to plot"), from = x.axis[1],
        else pick <- which
   if(pick == 0)
     stop(" no graph required ! ")
-  attach(x$workspace, warn.conflicts = FALSE)
-  on.exit(invisible(detach()))
+#  attach(x$workspace, warn.conflicts = FALSE)
+#  on.exit(invisible(detach()))
+  r.p <- x$workspace$r.p
+  r.mp <- x$workspace$r.mp
+  l.p <- x$workspace$l.p
+  l.mp <- x$workspace$l.mp
+  r.e <- x$workspace$r.e
+  r.e.mp <- x$workspace$r.e.mp
+  lr.mp <- x$workspace$lr.mp
+  inf.mp <- x$workspace$inf.mp
+  inf.mp.rp <- x$workspace$inf.mp.rp
+  np.mp <- x$workspace$np.mp
+  np.mp.rp <- x$workspace$np.mp.rp
   is.scale <- (paste(x$offset) == "scale")
   coeff <- x$coefficients
   if(is.scale)
@@ -2662,8 +2675,11 @@ summary.marg <- function(object, alpha = 0.05, test = NULL,
   if( !is.null(test) )
     dim.test <- length(test)
   alpha.quant <- c(qnorm(1 - alpha/2), qnorm(1 - alpha))
-  attach(object$workspace, warn.conflicts = FALSE)
-  on.exit( detach() )
+#  attach(object$workspace, warn.conflicts = FALSE)
+#  on.exit( detach() )
+  r.p <- object$workspace$r.p
+  r.mp <- object$workspace$r.mp
+  lr.mp <- object$workspace$lr.mp
   cf <- object$coefficients
   is.scale <- ( paste(object$offset) == "scale" )
   is.scalar <- object$is.scalar

@@ -76,12 +76,11 @@ Further information is available in the following vignettes:
 }
 }
 \author{
-S original by Alessandra R. Brazzale
-<alessandra.brazzale@isib.cnr.it>.  R port by Alessandra R.
-Brazzale <alessandra.brazzale@isib.cnr.it>, following earlier
-work by Douglas Bates.
+S original by Alessandra R. Brazzale <alessandra.brazzale@unimore.it>.  
+R port by Alessandra R. Brazzale <alessandra.brazzale@unimore.it>, following
+earlier work by Douglas Bates.
 
-Maintainer: Alessandra R. Brazzale <alessandra.brazzale@isib.cnr.it>
+Maintainer: Alessandra R. Brazzale <alessandra.brazzale@unimore.it>
 }
 \references{
 }

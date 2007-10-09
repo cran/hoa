@@ -25,8 +25,8 @@
 /c   { newpath 0 360 arc } def
 /r   { 4 2 roll moveto 1 copy 3 -1 roll exch 0 exch rlineto 0 rlineto -1 mul 0 exch rlineto closepath } def
 /p1  { stroke } def
-/p2  { gsave bg setrgbcolor fill grestore newpath } def
-/p3  { gsave bg setrgbcolor fill grestore stroke } def
+/p2  { gsave bg fill grestore newpath } def
+/p3  { gsave bg fill grestore stroke } def
 /t   { 6 -2 roll moveto gsave rotate
        ps mul neg 0 2 1 roll rmoveto
        1 index stringwidth pop
@@ -80,7 +80,7 @@ dup length dict begin
 %%Page: 1 1
 bp
 0.00 0.00 432.00 432.00 cl
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [] 0 setdash
 1 setlinecap
@@ -252,7 +252,7 @@ np
 o
 0.00 0.00 432.00 432.00 cl
 59.04 73.44 401.76 372.96 cl
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [ 3.00 5.00] 0 setdash
 1 setlinecap
@@ -465,7 +465,7 @@ np
 3.20 -2.74 l
 3.21 -2.74 l
 o
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [] 0 setdash
 np
@@ -675,7 +675,7 @@ np
 3.20 -2.60 l
 3.21 -2.60 l
 o
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [ 0.00 4.00] 0 setdash
 np
@@ -692,13 +692,13 @@ np
 o
 0.00 0.00 432.00 432.00 cl
 /ps 14 def /Font2 findfont 14 s
-0 0 0 rgb
+0 setgray
 230.40 397.45 (Profile and modified likelihood root) .5 0 0 t
 /ps 12 def /Font1 findfont 12 s
 230.40 18.72 (coefficient of type1) .5 0 0 t
 12.96 223.20 (likelihood root) .5 0 90 t
 59.04 73.44 401.76 372.96 cl
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [] 0 setdash
 1 setlinecap
@@ -715,7 +715,7 @@ np
 82.50 133.71 m
 15.12 0 l
 o
-0 0 0 rgb
+0 setgray
 0.75 setlinewidth
 [ 3.00 5.00] 0 setdash
 np
@@ -730,7 +730,7 @@ np
 15.12 0 l
 o
 /ps 8 def /Font1 findfont 8 s
-0 0 0 rgb
+0 setgray
 105.18 140.91 (likelihood root) 0 0 0 t
 105.18 130.83 (modified likelihood root) 0 0 0 t
 105.18 120.75 (Wald pivot) 0 0 0 t

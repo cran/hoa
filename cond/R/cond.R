@@ -1,6 +1,6 @@
-## file cond/R/cond.R, v 1.1-1 2006/12/16
+## file cond/R/cond.R, v 1.1-2 2007/10/16
 ##
-##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2007 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "cond" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -20,9 +20,10 @@
 ##  http://www.gnu.org/copyleft/gpl.html.
 ##
 ##  Please send any comments, suggestions or errors found to:
-##  Alessandra R. Brazzale, ISIB-CNR, corso Stati Uniti 4, 35127
-##  Padova (PD), Italy.  Email: alessandra.brazzale@isib.cnr.it.
-##  Web: http://www.isib.cnr.it/People/brazzale.html.
+##  Alessandra R. Brazzale, DSSCQ, University of Modena and Reggio
+##  Emilia, Viale Allegri 9, 42100 Reggio Emilia (RE), Italy.
+##  Email: alessandra.brazzale@unimore.it.  
+##  Web: http://www.isib.cnr.it/~brazzale/index.html.
 
 cond <- function(object, offset, ...)  UseMethod("cond")
 
@@ -427,8 +428,15 @@ summary.cond <- function(object, alpha = 0.05, test = NULL,
   if( !is.null(test) )
     dim.test <- length(test)
   alpha.quant <- c(qnorm(1 - alpha/2), qnorm(1 - alpha))
-  attach(object$workspace, warn.conflicts = FALSE)
-  on.exit( detach() )
+#  attach(object$workspace, warn.conflicts = FALSE)
+#  on.exit( detach() )
+  r.p <- object$workspace$r.p
+  r.mp <- object$workspace$r.mp
+  r.mp.cup <- object$workspace$r.mp.cup
+  r.mp.clow <- object$workspace$r.mp.clow
+  lr <- object$workspace$lr
+  lr.cup <- object$workspace$lr.cup
+  lr.clow <- object$workspace$lr.clow
   cf <- object$coefficients
   is.scalar <- object$is.scalar
   lr.ss <- try(smooth.spline(lr$y, lr$x), silent=TRUE)
@@ -584,8 +592,25 @@ plot.cond <- function(x = stop("nothing to plot"), from = x.axis[1],
        else pick <- which
   if(pick == 0)
     stop(" no graph required ! ")
-  attach(x$workspace, warn.conflicts = FALSE)
-  on.exit(invisible(detach()))
+#  attach(x$workspace, warn.conflicts = FALSE)
+#  on.exit(invisible(detach()))
+  r.p <- x$workspace$r.p
+  r.mp <- x$workspace$r.mp
+  r.mp.cup <- x$workspace$r.mp.cup
+  r.mp.clow <- x$workspace$r.mp.clow
+  l.p <- x$workspace$l.p
+  l.mp <- x$workspace$l.mp
+  r.e <- x$workspace$r.e
+  r.ce <- x$workspace$r.ce
+  lr.clow <- x$workspace$lr.clow
+  lr.cup <- x$workspace$lr.cup
+  lr <- x$workspace$lr
+  inf <- x$workspace$inf
+  limINF <- x$workspace$limINF
+  inf.rp <- x$workspace$inf.rp
+  np <- x$workspace$np
+  limNP <- x$workspace$limNP
+  np.rp <- x$workspace$np.rp
   coeff <- x$coefficients
   x.alpha <- qnorm(1 - alpha/2)
   CI.rp <- predict(smooth.spline(r.p$y, r.p$x), 

@@ -9,7 +9,7 @@
   an object of class \code{cond}. 
 }
 \usage{
-cond.glm(object, offset, formula = NULL, family = NULL, 
+\method{cond}{glm}(object, offset, formula = NULL, family = NULL, 
          data = sys.frame(sys.parent()), pts = 20, 
          n = max(100, 2*pts), tms = 0.6, from = NULL, to = NULL, 
          control = glm.control(...), trace = FALSE, \dots)

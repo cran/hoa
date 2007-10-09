@@ -42,11 +42,10 @@ rsm.sample              Conditional Sampler for Regression-Scale
 }
 }
 \author{
-S original by Alessandra R. Brazzale
-<alessandra.brazzale@isib.cnr.it>.  R port by Alessandra R.
-Brazzale <alessandra.brazzale@isib.cnr.it>.
+S original by Alessandra R. Brazzale <alessandra.brazzale@unimore.it>.  
+R port by Alessandra R. Brazzale <alessandra.brazzale@unimore.it>.
 
-Maintainer: Alessandra R. Brazzale <alessandra.brazzale@isib.cnr.it>
+Maintainer: Alessandra R. Brazzale <alessandra.brazzale@unimore.it>
 }
 \references{
 }

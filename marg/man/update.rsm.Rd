@@ -8,7 +8,7 @@
   updates can be more general.
 }
 \usage{
-update.rsm(object, formula., \dots, evaluate = TRUE)
+\method{update}{rsm}(object, formula., \dots, evaluate = TRUE)
 }
 \arguments{
   \item{object}{

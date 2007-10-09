@@ -6,3 +6,10 @@ Version 1.1-0
 
     o Removed bug in "rmt" for scalar case
 
+Version 1.1-2
+
+    o Fixed bindings for global variables 
+
+    o Changed way random seed is set
+
+    o Fixed bug in function "Laplace.c"

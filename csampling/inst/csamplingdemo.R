@@ -1,6 +1,6 @@
 ## file csampling/inst/csamplingdemo.R, v 1.0.0 2005/03/04
 ##
-##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2007 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "csampling" package for R.  This program 
 ##  is free software; you can redistribute it and/or modify it under 
@@ -20,9 +20,11 @@
 ##  http://www.gnu.org/copyleft/gpl.html.
 ##
 ##  Please send any comments, suggestions or errors found to:
-##  Alessandra R. Brazzale, ISIB-CNR, corso Stati Uniti 4, 35127
-##  Padova (PD), Italy.  Email: alessandra.brazzale@isib.cnr.it.
-##  Web: http://www.isib.cnr.it/People/brazzale.html.
+##  Alessandra R. Brazzale, DSSCQ, University of Modena and Reggio
+##  Emilia, Viale Allegri 9, 42100 Reggio Emilia (RE), Italy.
+##  Email: alessandra.brazzale@isib.cnr.it or 
+##         alessandra.brazzale@unimore.it.  
+##  Web: http://www.isib.cnr.it/~brazzale/index.html.
 
 
 ## ===================================================================

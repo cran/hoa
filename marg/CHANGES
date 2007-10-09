@@ -8,3 +8,8 @@ Version 1.1-0
 
     o Added data set "nuclear"
 
+Version 1.1-2
+
+    o Fixed bindings for global variables 
+
+    o Removed bug due to partial matching 

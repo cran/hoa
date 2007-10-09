@@ -1,6 +1,6 @@
-## file csampling/R/csampling.R, v 1.1-0 2006/12/16
+## file csampling/R/csampling.R, v 1.1-2 2007/10/16
 ##
-##  Copyright (C) 2000-2006 Alessandra R. Brazzale 
+##  Copyright (C) 2000-2007 Alessandra R. Brazzale 
 ##
 ##  This file is part of the "csampling" package for R.  This program  
 ##  is free software; you can redistribute it and/or modify it under 
@@ -20,9 +20,10 @@
 ##  http://www.gnu.org/copyleft/gpl.html.
 ##
 ##  Please send any comments, suggestions or errors found to:
-##  Alessandra R. Brazzale, ISIB-CNR, corso Stati Uniti 4, 35127
-##  Padova (PD), Italy.  Email: alessandra.brazzale@isib.cnr.it.
-##  Web: http://www.isib.cnr.it/People/brazzale.html.
+##  Alessandra R. Brazzale, DSSCQ, University of Modena and Reggio
+##  Emilia, Viale Allegri 9, 42100 Reggio Emilia (RE), Italy.
+##  Email: alessandra.brazzale@unimore.it.  
+##  Web: http://www.isib.cnr.it/~brazzale/index.html.
 
 make.sample.data <- function(rsmObject)
 {
@@ -66,7 +67,8 @@ rsm.sample <- function(data = stop("no data given"), R = 10000,
   else TRUE
   simul <- matrix(nrow = R, ncol = ncf + !fixed)
   rho <- vector(mode="numeric", length=R)
-  seed <- .Random.seed
+#  seed <- .Random.seed  
+  seed <- set.seed( trunc(runif(1, -10000, 10000)) )  
   simul.tmp <- ran.gen(data=data, R=1, ...)
   beta.s <- simul.tmp[1:ncf]
   sigma.s <- if(!fixed) simul.tmp[ncf+1] else sigma
@@ -229,7 +231,8 @@ Laplace.c <- function(val, idx, data, fixed = FALSE)
   {
     if( fixed & (dim(X)[2]==1) )
     {
-      arg <- (X%*%(val[i]-beta) + disp*anc) / disp
+#      arg <- (X%*%(val[i]-beta) + disp*anc) / disp
+      arg <- (X%*%(val[i]-beta) + sigma*anc) / sigma
       ret[i,2] <- exp( - sum( g0(arg, df=df, k=k)) )
     }
     else

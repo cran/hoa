@@ -57,7 +57,7 @@
   \code{\dots} argument which absorbes any additional arguments.
 }
 \seealso{\code{\link{rsm.families}}, \code{\link{family.rsm}}, 
-         \code{\link{rsm}}}
+         \code{\link{rsm}}
 }
 \keyword{methods}
 \keyword{classes}

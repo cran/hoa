@@ -6,7 +6,7 @@
   fitted \code{\link[marg]{rsm}} model object.
 }
 \usage{
-vcov.rsm(object, correlation = FALSE, \dots)
+\method{vcov}{rsm}(object, correlation = FALSE, \dots)
 }
 \arguments{
   \item{object}{ 

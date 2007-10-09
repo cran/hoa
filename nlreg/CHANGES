@@ -13,4 +13,10 @@ Version 1.1-0
     o Removed bug in the calculation of Fraser, Reid and Wu's (1999) 
       verson of r*
 
- 
+Version 1.1-2
+
+    o Fixed bindings for global variables
+
+    o Fixed bug in function "Shat.nlreg"
+
+    o Fixed bug in "plot.nlreg.contours"

@@ -1,6 +1,6 @@
-## file nlreg/R/nlreg.R, v 1.1-1 2006/12/16
+## file nlreg/R/nlreg.R, v 1.1-2 2007/10/16
 ##
-##  Copyright (C) 2000-2006 Ruggero Bellio & Alessandra R. Brazzale 
+##  Copyright (C) 2000-2007 Ruggero Bellio & Alessandra R. Brazzale 
 ##
 ##  This file is part of the "nlreg" package for R.  This program is 
 ##  free software; you can redistribute it and/or modify it under the 
@@ -20,9 +20,10 @@
 ##  http://www.gnu.org/copyleft/gpl.html.
 ##
 ##  Please send any comments, suggestions or errors found to:
-##  Alessandra R. Brazzale, ISIB-CNR, Corso Stati Uniti 4, 35127
-##  Padova (PD), Italy.  Email: alessandra.brazzale@isib.cnr.it.
-##  Web: http://www.isib.cnr.it/People/brazzale.html.
+##  Alessandra R. Brazzale, DSSCQ, University of Modena and Reggio
+##  Emilia, Viale Allegri 9, 42100 Reggio Emilia (RE), Italy.
+##  Email: alessandra.brazzale@unimore.it.  
+##  Web: http://www.isib.cnr.it/~brazzale/index.html.
 
 Dmean <- function(nlregObj, hessian = TRUE)       
 {
@@ -694,6 +695,7 @@ nlreg.diag <- function(fitted, hoa = TRUE, infl = TRUE, trace = FALSE)
   rc <- nlregObj$coef 
   vp <- nlregObj$varPar
   of <- nlregObj$offset
+  dupl <- nlregObj$data$dupl
   par <- nlregObj$ws$allPar
   mu <- nlregObj$fitted
   v <- nlregObj$weights
@@ -2465,7 +2467,7 @@ plot.nlreg.contours <- function(x, alpha = c(0.1, 0.05),
               warning(paste("could not calculate profile pairs sketches for parameters",
                             para1, "and", para2, "!"))
               points(obj2$para.r$x[[qq]], obj2$para.r$y[[qq]], 
-                     pch=pch1, col=col1, cex=cex)
+                     pch=pch1, col=cl1, cex=cex)
             }		
             if( hoa )
               if( length(obj2$para.rs$x[[qq]]) > 4 )
@@ -3186,6 +3188,9 @@ obsInfo.nlreg <- function(object, par, mu, v, m1 = NULL, m2 = NULL,
   rc <- nlregObj$coef 
   vp <- nlregObj$varPar
   of <- nlregObj$offset
+  t1 <- nlregObj$data$t1
+  t2 <- nlregObj$data$t2
+  repl <- nlregObj$data$repl
   if( nlregObj$ws$hoa )
   {
     md <- nlregObj$ws$md
@@ -3336,6 +3341,7 @@ expInfo.nlreg <- function(object, par, mu, v, m1=NULL, v1=NULL, ...)
   rc <- nlregObj$coef 
   vp <- nlregObj$varPar
   of <- nlregObj$offset
+  repl <- nlregObj$data$repl
   if( nlregObj$ws$hoa )
   {
     md <- nlregObj$ws$md
@@ -3412,6 +3418,7 @@ theta.deriv <- function(nlregObj, par, mu, v, m1=NULL, v1=NULL)
   rc <- nlregObj$coef 
   vp <- nlregObj$varPar
   of <- nlregObj$offset
+  repl <- nlregObj$data$repl
   if( missing(par) )  par <- nlregObj$ws$allPar
   if( missing(mu) )  mu <- nlregObj$fitted
   if( missing(v) )  v <- nlregObj$weights
@@ -3476,6 +3483,7 @@ Shat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
   rc <- nlregObj1$coef 
   vp <- nlregObj1$varPar
   of <- nlregObj0$offset
+  repl <- nlregObj1$data$repl
   .probl <- ( nlregObj1$ws$homVar && is.null(nlregObj1$varPar) )
   if( missing(par.1) )  par.1 <- nlregObj1$ws$allPar
   if( missing(par.0) )  par.0 <- nlregObj0$ws$allPar	
@@ -3487,7 +3495,7 @@ Shat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
   on.exit( detach(nlregObj1$data) )
   if( is.null(m1.1) || is.null(m1.0) )
   {
-    md <- if( nlregObj1$ws$hoa )  nlregObj$ws$md
+    md <- if( nlregObj1$ws$hoa )  nlregObj1$ws$md
             else Dmean(nlregObj1, hessian=FALSE)
     tmp <- as.list(nlregObj1$ws$allPar)
     temp <- do.call("md", tmp)
@@ -3555,6 +3563,7 @@ qhat.nlreg <- function(nlregObj1, nlregObj0, par.1, par.0,
   rc <- nlregObj1$coef 
   vp <- nlregObj1$varPar
   of <- nlregObj0$offset
+  repl <- nlregObj1$data$repl
   .probl <- ( nlregObj1$ws$homVar && is.null(nlregObj1$varPar) )
   if( missing(par.1) )  par.1 <- nlregObj1$ws$allPar
   if( missing(par.0) )  par.0 <- nlregObj0$ws$allPar	
