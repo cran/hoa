@@ -1,4 +1,4 @@
-Software and datasets included in the hoa package bundle.
+Software and datasets included in the hoa package.
 
 The datasets and software are provided in good faith, but none of 
 the authors warrant their accuracy nor can be held responsible for 
@@ -10,22 +10,14 @@ This file is intended to clarify ownership and copyright.
 Copyrights
 ==========
 
-File cond/R/cond.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale
-File marg/R/marg.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale
-File marg/inst/margdemo.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale
-File csampling/R/csampling.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale
-File csampling/inst/csamplingdemo.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale
-File nlreg/R/nlreg.R 
-  Copyright (C) 2000-2005 Alessandra R. Brazzale & Ruggero Bellio
+File hoa/R/*.R 
+  Copyright (C) 2000-2015 Alessandra R. Brazzale
+File hoa/inst/*demo.R 
+  Copyright (C) 2000-2015 Alessandra R. Brazzale
 
 
-Our understanding is that the dataset files cond/data/*.rda,
-marg/data/*.rda, nlreg/data/*.rda are not copyright.
+Our understanding is that the dataset files hoa/data/*.rda are not 
+copyright.
 
 
 Licence
@@ -52,4 +44,4 @@ The file COPYING in the R top-level directory is a copy of the `GNU
 General Public License'.
 
 
-alessandra.brazzale@unimore.it
+alessandra.brazzale@unipd.it

@@ -1,0 +1,57 @@
+Version 1.0-0: initial version in package form
+
+Version 1.1-0
+
+    o Added CITATION file
+
+    o Added Rnews paper vignette
+
+    o Added data set "nuclear"
+
+Version 1.1-2
+
+    o Fixed bindings for global variables 
+
+    o Removed bug due to partial matching 
+
+Version 1.1-3: 
+
+    o Unbundled package 
+
+Version 1.2: 
+
+    o Fixed documentation
+
+Version 1.2-1: 
+
+    o Updated to R version 2.14.0
+
+Version 1.2-2: 
+
+    o Updated to R version 3.0.0
+    
+    o Fixed scoping rules
+
+Version 2.0.0
+
+    o Merged cond, marg, nlreg packages together
+
+Version 2.0.1
+
+    o fixed warnings messages due to old.par <- par()
+
+Version 2.0.2
+
+    o changed package description
+    
+    o changed csampling package category from depends to suggests
+
+Version 2.1.0
+
+    o Added the function tem to the package (it is based on the old fraser.reid function)
+    
+Version 2.1.1
+
+    o Added graphics and stats to import, removed stats from importFrom
+        
+    o Updated CITATION

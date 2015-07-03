@@ -1,11 +1,19 @@
-Bundle: hoa
-BundleDescription: Various functions for higher order likelihood-based
-  inference
-Contains: cond marg nlreg csampling 
-Version: 1.1-2
-Date: 2007-10-09
-Depends: R (>= 2.6.0), statmod, survival
-Maintainer: Alessandra R. Brazzale <alessandra.brazzale@unimore.it> 
-License: GPL (>= 2)
+Package: hoa
+Version: 2.1.1
+Date: 2015-07-03
+Title: Higher Order Likelihood Inference
+Author: R port by Alessandra R. Brazzale <alessandra.brazzale@unipd.it>, following 
+  earlier work by Douglas Bates. The function tem is based on work by Anthony Davison <Anthony.Davison@epfl.ch>
+Maintainer: Alex-Antoine Fortin <alex@fortin.bio>
+Depends: R (>= 3.0.0)
+Imports: graphics, statmod, stats, survival, utils
+Suggests: boot, csampling
+Description: Performs likelihood-based inference for a wide range of regression models. Provides higher-order approximations for inference based on extensions  of saddlepoint type arguments as discussed in the book Applied Asymptotics: Case Studies in Small-Sample Statistics by Brazzale, Davison, and Reid (2007).
+License: GPL (>= 2) | file LICENCE
 URL: http://www.r-project.org, http://statwww.epfl.ch/AA/
-Packaged: Thu Mar  6 15:00:05 2008; brazzale
+LazyLoad: yes
+LazyData: yes
+Packaged: 2015-07-03 14:47:45 UTC; Alex
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2015-07-04 08:40:19
