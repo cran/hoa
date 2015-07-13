@@ -1,6 +1,6 @@
-\name{hoa-package}
-\Rdversion{2.1.1}
-\alias{hoa-package}
+\name{hoa}
+\Rdversion{2.1.2}
+\alias{hoa}
 \docType{package}
 \title{
 Higher Order Likelihood Inference
@@ -11,8 +11,8 @@ Performs likelihood-based inference for a wide range of regression models. Provi
 \details{
 \tabular{ll}{
 Package: \tab hoa\cr
-Version: \tab 2.1.1\cr
-Date: \tab 2015-07-03\cr
+Version: \tab 2.1.2\cr
+Date: \tab 2015-07-13\cr
 Depends: \tab R (>= 3.0.0)\cr
 Imports: \tab graphics, statmod, stats, survival, utils\cr
 Suggests: \tab boot, csampling\cr
@@ -145,7 +145,7 @@ ria                     Radioimmunoassay Data
 
 Further information is available in the following vignettes:
 \tabular{ll}{
-\code{Rnews-paper} \tab hoa: An R Package Bundle for Higher Order Likelihood Inference (source, pdf)\cr
+\code{Rnews-paper} \tab hoa: An R Package for Higher Order Likelihood Inference (source, pdf)\cr
 }
 }
 \author{

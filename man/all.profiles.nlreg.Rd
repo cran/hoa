@@ -8,7 +8,7 @@
   It is not intended to be called directly by users.
 }
 \usage{
-\method{all.profiles}{nlreg}(fitted, hoa = TRUE, precision = 6, signif = 30, 
+all.profiles.nlreg(fitted, hoa = TRUE, precision = 6, signif = 30, 
                    n = 50, omit = 0.5, trace = FALSE, call, \dots)
 }
 \arguments{

@@ -1,8 +1,8 @@
-abb335d2041d4567fc8b5ca3c9a92f62 *CHANGES
+e68a248401601e8ead4c10508bb8742c *CHANGES
 94d55d512a9ba36caa9b7df079bae19f *COPYING
-211f186b035c71b6885ab50e30a835c5 *DESCRIPTION
+cfb22f330bc9bba142376dde221fde27 *DESCRIPTION
 a727c881fd1217b0ec65dbf98e70b774 *LICENCE
-42e475f65806b519c8078baac7628cc6 *NAMESPACE
+cc6dfc1a0c0244d100cd119d81cc69e1 *NAMESPACE
 5e146c0f8c4ebcc9094f639f44db13db *R/cond.R
 588b744046fbe623645ef57ac4af555c *R/marg.R
 ed05a7e38c9e240e7ce3bccce64d3819 *R/nlreg.R
@@ -42,7 +42,7 @@ e4449a71fc597483dfc363ca9e86ff3c *man/C1.Rd
 73c61e83221d9bcac77f287d585b3949 *man/Huber.Rd
 dbe28c4f08afdf07ea0d1d696fa0a0d9 *man/aids.Rd
 0733023f8afe444ee9e7081e3615fd2a *man/airway.Rd
-24f6b673cc8f364f5bd743ecd8457218 *man/all.profiles.nlreg.Rd
+758c7d493e60ed28b9bcc79862699205 *man/all.profiles.nlreg.Rd
 635afb51bf567ac795da139eda9bad26 *man/anova.rsm.Rd
 b40f180ae2b08ab86301713825c8c51f *man/anova.rsmlist.Rd
 8aaae73883e1e3372eef1a9c656a30c1 *man/babies.Rd
@@ -66,7 +66,7 @@ fdee395ad483d7a1759ea1c86c5dcabf *man/family.rsm.Rd
 0adb32c5ed81e459c2aa02ce697cd0bd *man/fraudulent.Rd
 8278c7ef61fe58dec98a98de84d5a482 *man/fungal.Rd
 40bef0fe7df890c1f4af5920f651daf5 *man/helicopter.Rd
-0552b6f4bed01d238e534064ff0c076e *man/hoa-package.Rd
+fc3188ac02ffc0d0a5475d052ff21aed *man/hoa.Rd
 9aea995207fc13bf94bef567c11f9e93 *man/houses.Rd
 94927b8f73daad7ae8ca957ed3d51545 *man/logLik.nlreg.Rd
 a2a39815206a00952572577d5b5430b5 *man/logLik.rsm.Rd
@@ -137,4 +137,4 @@ a5eb67433147c5b41c34843389824dba *man/urine.Rd
 2ac3352d6cd17eb3c9f893a902ea139a *man/var2cor.nlregmpl.Rd
 ce1065f86d126f477a4f6952fef53b17 *man/vcov.rsm.Rd
 14199b32482d8f774348f867135acb0e *man/venice.Rd
-39ee7209894d1eacd79b72c8b377974a *vignettes/Rnews-paper.Rnw
+90b373e5e17a46b92d85c4634fad5317 *vignettes/Rnews-paper.Rnw

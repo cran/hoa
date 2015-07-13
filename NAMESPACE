@@ -4,8 +4,8 @@
 export(cond, nlreg, rsm, student, logistic, logWeibull, extreme, 
        Huber, dHuber, pHuber, qHuber, rHuber, Dmean, Dvar,
        expInfo, mpl, obsInfo, param, var2cor, nlreg.diag,
-       nlreg.diag.plots, rsm.diag, rsm.diag.plots, cond.glm,
-       tem, fraser.reid, lik.ci)
+       nlreg.diag.plots, rsm.diag, rsm.diag.plots, rsm.surv,
+       rsm.fit, cond.glm, tem, fraser.reid, lik.ci)
 
 # Import all packages listed as Imports or Depends
 import(statmod, survival, graphics, stats)
@@ -55,6 +55,7 @@ S3method(print,summary.nlreg.profile)
 S3method(print,summary.rsm)
 S3method(profile,nlreg)
 S3method(residuals,nlreg)
+S3method(resid,nlreg)
 S3method(residuals,rsm)
 S3method(summary,all.nlreg.profiles)
 S3method(summary,cond)

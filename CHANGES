@@ -55,3 +55,11 @@ Version 2.1.1
     o Added graphics and stats to import, removed stats from importFrom
         
     o Updated CITATION
+    
+Version 2.1.2
+
+    o Added rsm.fit, rsm.surv to the EXPORT list
+        
+    o Registered resid method for nlreg objects
+        
+    o Updated the package help file and the all.profiles.function function help file
