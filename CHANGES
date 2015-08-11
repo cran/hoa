@@ -63,3 +63,11 @@ Version 2.1.2
     o Registered resid method for nlreg objects
         
     o Updated the package help file and the all.profiles.function function help file
+    
+Version 2.1.3
+
+    o tem() will now produce fewer warnings    
+
+Version 2.1.4
+
+    o tem() now accepts a vector of value for its parameter psi

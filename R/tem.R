@@ -29,7 +29,7 @@
 tem <- function(psi=NULL, nlogL, phi, make.V, th.init, data, tol=10^(-5), n.psi=50)
 {
 #psi should be NULL or a scalar
-  if (length(psi) > 1) stop("psi must be a scalar or NULL")
+  if (length(psi) == 2 | (is.null(psi) & n.psi==2)) stop("psi must be NULL or not a vector of length 2")
 #
 # define some ancillary functions
 #
@@ -54,7 +54,7 @@ d.phi <- function(x, V, data, tol=tol)
 #
 # full maximum likelihood fit 
 #
-  full <- nlm(nlogL.full, jitter(th.init), hessian=TRUE, data=data)
+  suppressWarnings(full <- nlm(nlogL.full, jitter(th.init), hessian=TRUE, data=data))
   if(full$code>2) stop("Full fit failed: try different initial values")
   th.full <- full$estimate
   th.se <- sqrt(diag(solve(full$hessian)))
@@ -82,7 +82,7 @@ d.phi <- function(x, V, data, tol=tol)
   out$th.rest <- matrix(th.full,n.psi,length(th.full),byrow=TRUE)
   if (n.psi == 1)
   {
-    rest <- nlm(nlogL.rest, jitter(out$th.rest[,-1]), hessian=TRUE, psi=psi, data=data)
+    suppressWarnings(rest <- nlm(nlogL.rest, jitter(out$th.rest[,-1]), hessian=TRUE, psi=psi, data=data))
     if(rest$code>2) stop("Restricted fit failed: try different initial values")
     out$th.rest <- c(psi,rest$estimate)
     dim(out$th.rest) <- dim(matrix(0, nrow=n.psi, ncol=length(out$th.rest)))
@@ -93,21 +93,28 @@ d.phi <- function(x, V, data, tol=tol)
 { 
   for(j in (K-1):1)
   {
-    rest <- nlm(nlogL.rest, jitter(out$th.rest[j+1,-1]), hessian=TRUE, psi=psi[j], data=data)
+    suppressWarnings(rest <- nlm(nlogL.rest, jitter(out$th.rest[j+1,-1]), hessian=TRUE, psi=psi[j], data=data))
     out$th.rest[j,] <- c(psi[j],rest$estimate)
     L.rest[j] <- -rest$minimum
     J.rest[j] <- det(rest$hessian)
   }
   if(even(n.psi))
   { 
-  	rest <- nlm(nlogL.rest, jitter(th.full[-1]), hessian=TRUE, psi=psi[K], data=data)
+    suppressWarnings(rest <- nlm(nlogL.rest, jitter(th.full[-1]), hessian=TRUE, psi=psi[K], data=data))
+    out$th.rest[K,] <- c(psi[K],rest$estimate)
+    L.rest[K] <- -rest$minimum
+    J.rest[K] <- det(rest$hessian)
+  }
+  else 
+  {
+    suppressWarnings(rest <- nlm(nlogL.rest, jitter(out$th.rest[K-1,-1]), hessian=TRUE, psi=psi[K], data=data))
     out$th.rest[K,] <- c(psi[K],rest$estimate)
     L.rest[K] <- -rest$minimum
     J.rest[K] <- det(rest$hessian)
   }
   for(j in (K+1):n.psi)
   {
-    rest <- nlm(nlogL.rest, jitter(out$th.rest[j-1,-1]), hessian=TRUE, psi=psi[j], data=data)
+    suppressWarnings(rest <- nlm(nlogL.rest, jitter(out$th.rest[j-1,-1]), hessian=TRUE, psi=psi[j], data=data))
     out$th.rest[j,] <- c(psi[j],rest$estimate)
     L.rest[j] <- -rest$minimum
     J.rest[j] <- det(rest$hessian)
