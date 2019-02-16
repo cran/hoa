@@ -1,5 +1,5 @@
 Package: hoa
-Version: 2.1.4
+Version: 2.1.4.1
 Date: 2015-08-11
 Title: Higher Order Likelihood Inference
 Author: R port by Alessandra R. Brazzale <alessandra.brazzale@unipd.it>, following 
@@ -10,10 +10,10 @@ Imports: graphics, statmod, stats, survival, utils
 Suggests: boot, csampling
 Description: Performs likelihood-based inference for a wide range of regression models. Provides higher-order approximations for inference based on extensions  of saddlepoint type arguments as discussed in the book Applied Asymptotics: Case Studies in Small-Sample Statistics by Brazzale, Davison, and Reid (2007).
 License: GPL (>= 2) | file LICENCE
-URL: http://www.r-project.org, http://statwww.epfl.ch/AA/
+URL: https://www.r-project.org, http://statwww.epfl.ch/AA/
 LazyLoad: yes
 LazyData: yes
-Packaged: 2015-08-11 21:45:00 UTC; Alex
+Packaged: 2019-02-16 14:26:09 UTC; hornik
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2015-08-12 00:35:40
+Date/Publication: 2019-02-16 15:00:40 UTC

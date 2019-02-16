@@ -12,7 +12,7 @@
 \def\R{{\sf R}}
 \def\code{\texttt}
 
-\title{\code{hoa}: An \R\ Package Bundle for Higher Order Likelihood Inference}
+\title{\code{hoa}: An \R\ Package for Higher Order Likelihood Inference}
 \author{by Alessandra R. Brazzale}
 \date{\emph{Rnews}, \textbf{5/1} May 2005, pp.~20--27}
 
